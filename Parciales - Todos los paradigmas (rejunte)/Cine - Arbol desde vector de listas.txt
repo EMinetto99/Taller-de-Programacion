@@ -1,0 +1,190 @@
+Un cine desea analizar las ventas de entradas del último mes. Para ello dispone de
+un módulo “cargarEntradas” que lee la información de las entradas vendidas y
+genera una estructura donde por cada dia del mes (1..31) se tienen agrupadas
+todas las entradas vendidas dicho día. De cada entrada se almacena: título de la
+película, horario de la función y precio. Para cada cada día del mes, las ventas se
+encuentran ordenadas por el título de la película. 
+
+Se pide implementar un programa en Pascal que:
+
+a) invoque al módulo “cargarEntradas”. 
+
+b) Implemente e invoque a un módulo que reciba la estructura generada en a) y retorne 
+    un ABB, donde por cada película se tenga el título de la película y el monto recaudado
+    por dicha película en las funciones de las 21:00 hs. El ABB debe estar ordenado por
+    el monto recaudado calculado.
+
+//----------------------------------------------------------------------------------------------------------------
+
+program Cine;
+Uses crt;
+const
+  df = 31;
+type
+  rango = 1..df;
+
+  entrada = record
+    titulo : String[30];
+    hora : String[30];
+    precio : real;
+  end;
+
+  lista = ^nodo;
+
+  nodo = record
+    dato : entrada;
+    sig : lista;
+  end;
+
+  vector = array[rango] of lista;
+
+  regA = record
+    titulo : String[30];
+    totalReca : real;
+  end;
+
+  arbol = ^nodoA;
+
+  nodoA = record
+    dato : regA;
+    hi : arbol;
+    hd : arbol;
+  end;
+
+
+procedure iniciarVector(var v : vector);
+var
+  i : rango;
+begin
+  for i := 1 to df do
+    v[i] := nil;
+end;
+
+procedure leer(var e : entrada);
+begin
+  write('Ingrese titulo ');
+  readln(e.titulo);
+  if(e.titulo <> 'zzz') then begin
+    write('Ingrese horario ');
+    readln(e.hora);
+    write('Ingresar precio ');
+    readln(e.precio);
+  end;
+end;
+
+procedure agregarOrdenado(var l : lista; e : entrada);
+var
+  aux, ant, act : lista;
+begin
+  new(aux);
+  aux^.dato := e;
+  act := l;
+  ant := l;
+  while(act <> nil) and (e.titulo > act^.dato.titulo) do begin
+    ant := act;
+    act := act^.sig;
+  end;
+  if(act = ant) then
+    l := aux
+  else
+    ant^.sig := aux;
+  aux^.sig := act;
+end;
+
+procedure cargarLista(var l : lista);
+var
+  e : entrada;
+begin
+  leer(e);
+  while(e.titulo <> 'zzz') do begin
+    agregarOrdenado(l,e);
+    leer(e);
+  end;
+end;
+
+procedure cargarEntradas(var v : vector); // Se dispone
+var
+  i : rango;
+begin
+
+  for i := 1 to df do begin
+    cargarLista(v[i]);
+  end;
+end;
+
+procedure minimo(var min : entrada; var pos : rango; var v : vector);
+var
+  i : rango;
+begin
+  min.titulo := 'zzz';
+  for i := 1 to df do begin
+    if(v[i] <> nil) then
+      if(v[i]^.dato.titulo < min.titulo) then begin
+        min := v[i]^.dato;
+        pos := i;
+      end;
+  end;
+  if(min.titulo <> 'zzz') then
+    v[pos] := v[pos]^.sig;
+end;
+
+procedure crearArbol(var a : arbol; r : regA);
+begin
+  if(a = nil) then begin
+    new(a);
+    a^.dato := r;
+    a^.hi := nil;
+    a^.hd := nil;
+  end
+  else
+    if(r.totalReca < a^.dato.totalReca) then
+      crearArbol(a^.hi,r)
+    else
+      if(r.totalReca > a^.dato.totalReca) then
+        crearArbol(a^.hd,r);
+end;
+
+procedure mergeAcumulador(var a : arbol; v : vector);
+var
+  min : entrada;
+  pos : rango;
+  r : regA;
+begin
+  minimo(min,pos,v);
+  while(min.titulo <> 'zzz') do begin
+    r.titulo := min.titulo;
+    r.totalReca := 0;
+    while(min.titulo <> 'zzz') and (r.titulo = min.titulo) do begin
+      if(min.hora = '21:00') then
+        r.totalReca := r.totalReca + min.precio;
+      minimo(min,pos,v);
+    end;
+    if(r.totalReca <> 0) then
+      crearArbol(a,r);
+  end;
+end;
+
+procedure inOrden(a : arbol);
+begin
+  if(a <> nil) then begin
+    inOrden(a^.hi);
+    writeln(a^.dato.titulo,' ',a^.dato.totalReca:2:2);
+    inOrden(a^.hd);
+  end;
+end;
+
+var
+  v : vector;
+  a : arbol;
+begin
+  clrscr;
+  iniciarVector(v);
+  a := nil;
+
+  cargarEntradas(v); // Se dispone
+  mergeAcumulador(a,v);
+
+  inOrden(a);
+
+  readln;
+end.

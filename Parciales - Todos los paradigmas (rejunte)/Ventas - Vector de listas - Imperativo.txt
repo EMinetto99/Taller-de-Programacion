@@ -1,0 +1,207 @@
+//Enunciado:
+
+{Se lee información acerca de las ventas de productos realizadas en las 5 sucursales de una empresa.
+De cada venta se conoce el código de producto, cantidad vendida y monto total de la venta. 
+Las ventas de cada sucursal se leen de manera consecutiva y ordenadas por código de producto. 
+La lectura por cada sucursal finaliza cuando se lee el código de producto -1, el cual no se procesa. 
+Implementar un programa para que a partir de la información leida, resuelva los siguientes ítems:
+
+a) Utilizando la técnica de merge o merge acumulador según corresponda, generar una lista que
+contenga la cantidad total vendida para cada código de producto, ordenada por código de
+producto.
+
+b) Realizar un módulo recursivo que reciba la lista generada en el punto a y retorne la cantidad de
+productos para los cuales la cantidad total vendida supera las 500 unidades.}
+
+//------------------------------------------------------------------------------------------------------------------------------
+
+program Sucursales;
+Uses crt;
+const
+  df = 5;
+
+type
+
+  rangoSuc = 1..df;
+
+  venta = record
+    codPro : integer;
+    cantVen : integer;
+    montoVen : real;
+  end;
+
+  lista = ^nodo;
+
+  nodo = record
+    dato : venta;
+    sig : lista;
+  end;
+
+  vectorVen = array[rangoSuc] of lista;
+
+  producto = record
+    codigo : integer;
+    cantVendida : integer;
+  end;
+
+  listaP = ^nodoP;
+
+  nodoP = record
+    dato : producto;
+    sig : listaP;
+  end;
+
+
+procedure iniciarVector(var vec : vectorVen);
+var
+  i : rangoSuc;
+begin
+  for i := 1 to df do
+    vec[i] := nil;
+end;
+
+procedure leer(var v : venta);
+begin
+  write('Ingresar codigo de producto ');
+  readln(v.codPro);
+  if(v.codPro <> -1) then begin
+    write('Ingresar cantidad vendida ');
+    readln(v.cantVen);
+    write('Ingrese monto de la venta ');
+    readln(v.montoVen);
+  end;
+end;
+
+procedure agregarOrdenado(var l : lista; v : venta);
+var
+  aux, ant, act : lista;
+begin
+
+  new(aux);
+  aux^.dato := v;
+  act := l;
+  ant:= l;
+  while(act <> nil) and (v.codPro > l^.dato.codPro) do begin
+    ant := act;
+    act := act^.sig;
+  end;
+  if(act = ant)  then
+    l := aux
+  else
+    ant^.sig := aux;
+  aux^.sig := act;
+
+end;
+
+procedure cargarVector(var vec : vectorVen);
+var
+  v : venta;
+  i : rangoSuc;
+begin
+
+  for i := 1 to df do begin
+
+    leer(v);
+    writeln;
+    while(v.codPro <> -1) do begin
+
+      agregarOrdenado(vec[i],v);
+
+      leer(v);
+      writeln;
+    end;
+
+  end;
+
+end;
+
+procedure determinarMinimo(var minimo : venta; var pos : rangoSuc; var vec : vectorVen);
+var
+  i : rangoSuc;
+begin
+  minimo.codPro := 9999;
+
+  for i := 1 to df do begin
+    if(vec[i] <> nil) then
+      if(vec[i]^.dato.codPro < minimo.codPro) then begin
+        minimo := vec[i]^.dato;
+        pos := i;
+      end;
+  end;
+  if(minimo.codPro <> 9999) then
+    vec[pos] := vec[pos]^.sig;
+
+end;
+
+procedure agregarAtras(var l : listaP; var ult : listaP; p : producto);
+var
+  nue : listaP;
+begin
+  new(nue);
+  nue^.dato := p;
+  nue^.sig := nil;
+  if(l = nil) then
+    l := nue
+  else
+    ult^.sig := nue;
+  ult := nue;
+end;
+
+procedure mergeAcumulador(var l : listaP; var vec : vectorVen);
+var
+  minimo : venta;
+  pos : rangoSuc;
+  ult : listaP;
+  auxMinimo : venta;
+  p : producto;
+begin
+  ult := nil;
+  l := nil;
+
+  determinarMinimo(minimo,pos,vec);
+  while(minimo.codPro <> 9999) do begin
+
+    auxMinimo := minimo;
+
+    p.cantVendida := 0;
+
+    while(auxMinimo.codPro = minimo.codPro) do begin
+      p.cantVendida := p.cantVendida + minimo.cantVen;
+      determinarMinimo(minimo,pos,vec);
+    end;
+
+    p.codigo := auxMinimo.codPro;
+
+    agregarAtras(l,ult,p);
+
+  end;
+
+end;
+
+procedure supera500(l : listaP; var cantMas500 : integer);
+begin
+  if( l <> nil) then begin
+    If(l^.dato.cantVendida > 500) then
+      cantMas500 := cantMas500 + 1;
+    supera500(l^.sig,cantMas500);
+  end;
+end;
+
+var
+  vec : vectorVen;
+  l : listaP;
+  cantMas500 : integer;
+begin
+  clrscr;
+  iniciarVector(vec);
+  cantMas500 := 0;
+
+  cargarVector(vec);
+
+  MergeAcumulador(l,vec);
+
+  supera500(l,cantMas500);
+  writeln('Cantidad de productos cuya venta supera las 500 unidades: ',cantMas500);
+
+  readln;
+end.	

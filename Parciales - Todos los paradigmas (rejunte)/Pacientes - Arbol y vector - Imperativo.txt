@@ -1,0 +1,156 @@
+Un psicólogo necesita un sistema para administrar a sus pacientes. De cada paciente registra: dni,
+cód. de paciente, obra social (1: ioma 2: pami 3: osde 4: galeno 5: no tiene) y costo abonado por sesión.
+
+Implemente un programa que: 
+
+a) Genere un ABB ordenado por cód. de paciente. Para ello, genere información hasta el paciente con dni 0. 
+
+A partir del ABB, realice módulos (uno por inciso) para:
+
+b) Generar una estructura con código y dni de los pacientes de osde, sabiendo que cómo máximo son 100. 
+    La estructura debe ordenarse por código ascendentemente .
+c) Dado un código de paciente, aumentar el costo abonado por sesión en un monto recibido. 
+    Considere que el paciente puede no existir.
+
+NOTA: Realice el programa principal que invoque a los módulos desarrollados.
+
+//-----------------------------------------------------------------------------------------------------
+
+
+program Pacientes;
+Uses crt;
+const
+  df = 5;
+  dfOsde = 100;
+type
+
+  rango = 1..df;
+
+  paciente = record
+    dni : integer;
+    codPaciente : integer;
+    codObraSoc : rango;
+    costoSesion : real;
+  end;
+
+  arbol = ^nodo;
+
+  nodo = record
+    dato : paciente;
+    hi : arbol;
+    hd : arbol;
+  end;
+
+  pacienteVector = record
+    dni : integer;
+    codigo : integer;
+  end;
+
+  vector = array[1..dfOsde] of pacienteVector;
+
+procedure leer(var p : paciente);
+begin
+  write('Ingresa dni ');
+  readln(p.dni);
+  if(p.dni <> 0) then begin
+    write('Ingresar codigo de paciente ');
+    readln(p.codPaciente);
+    write('Ingresar obra social ');
+    readln(p.codObraSoc);
+    write('Ingrese costo de sesion ');
+    readln(p.costoSesion);
+  end;
+end;
+
+procedure crearArbol(var a : arbol; p  : paciente);
+begin
+  if(a = nil) then begin
+    new(a);
+    a^.dato := p;
+    a^.hi := nil;
+    a^.hd := nil;
+  end
+  else
+    if(p.codPaciente < a^.dato.codPaciente) then
+      crearArbol(a^.hi,p)
+    else
+      crearArbol(a^.hd,p);
+
+end;
+
+procedure cargarArbol(var a : arbol);
+var
+  p : paciente;
+begin
+  leer(p);
+  while(p.dni <> 0) do begin
+    crearArbol(a,p);
+    leer(p);
+  end;
+end;
+
+procedure cargarVector(var v : vector; a : arbol; var dl : integer);
+begin
+
+  if(a <> nil) then begin
+    cargarVector(v,a^.hi,dl);
+    if(a^.dato.codObraSoc = 3) and (dl < 100) then begin
+      dl := dl + 1;
+      v[dl].dni := a^.dato.dni;
+      v[dl].codigo := a^.dato.codPaciente;
+    end;
+    cargarVector(v,a^.hd,dl);
+  end;
+end;
+
+function aumentarMonto(var a : arbol; codi : integer; monto : real) : boolean;
+begin
+
+ if(a = nil) then begin
+    aumentarMonto := false;
+ end
+ else begin
+       if(codi = a^.dato.codPaciente) then begin
+         a^.dato.costoSesion := a^.dato.costoSesion + monto;
+         aumentarMonto := true;
+       end
+       else
+         if(codi < a^.dato.codPaciente) then
+          aumentarMonto:= aumentarMonto(a^.hi,codi,monto)
+         else
+           aumentarMonto:= aumentarMonto(a^.hd,codi,monto);
+   end;
+   
+end;
+
+var
+  a : arbol;
+  dl, i, codi : integer;
+  monto : real;
+  v : vector;
+begin
+  clrscr;
+  a := nil;
+  dl := 0;
+
+  cargarArbol(a);
+
+  cargarVector(v,a,dl);
+
+  writeln;
+
+  for i := 1 to dl do
+    writeln('Dni ',v[i].dni,' codigo ',v[i].codigo);
+
+  writeln;
+  write('Ingrese codigo de paciente que se aumentara costo de sesion ');
+  readln(codi);
+  write('Ingrese monto ');
+  readln(monto);
+  if(aumentarMonto(a,codi,monto)) then
+    writeln('Se ha increnentado el costo de sesion del paciente ',codi)
+  else
+    writeln('El codigo de paciente ingresado no se encuentra');
+
+  readln;
+end.

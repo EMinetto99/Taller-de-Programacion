@@ -1,0 +1,199 @@
+package Facultad;
+
+public class Programa {
+    
+    public static void main(String[] args) {
+        
+        DeGrado dg = new DeGrado(555,"Juan",2,"APU");
+        
+        Materia m1 = new Materia("Taller",9,"6/11");
+        dg.AgregarMateria(m1);
+        Materia m2 = new Materia("Tesis",7,"6/11");
+        dg.AgregarMateria(m2);    
+        
+        DeDoctorado dd = new DeDoctorado(222,"Sofia",2,"Licenciado","UNLP");
+        
+        Materia m3 = new Materia("Mate4",6,"6/11");
+        dd.AgregarMateria(m3);
+        Materia m4 = new Materia("Tesis",9,"6/11");
+        dd.AgregarMateria(m4);
+        
+        System.out.println(dg.toString());
+        
+        System.out.println(dd.toString());
+        
+    }
+    
+}
+
+--------------------------------------------------------------------------------------------------
+
+package Facultad;
+
+public abstract class Alumno {
+    
+    private int dni;
+    private String nombre;
+    private Materia aprobadas[];
+    private int df;
+    private int dl;
+    
+    public Alumno(int dni, String nombre, int n){
+        this.dni = dni;
+        this.nombre = nombre;
+        this.df = n;
+        aprobadas = new Materia[df];
+        this.dl = 0;
+    }
+    
+    public void AgregarMateria(Materia m){
+        aprobadas[dl] = m;
+        dl++;
+    }
+    
+    public Materia getMateria(int x){
+        return aprobadas[x];
+    }
+    
+    public int getCantAprobadas(){
+        return dl;
+    }
+    
+    
+    public int CantMaterias(){
+        return df;
+    }
+    
+    public String toString(){
+        return dni + " " + nombre;
+    }
+    
+    public abstract String Determinar();
+    
+}
+
+--------------------------------------------------------------------------------------------------
+
+package Facultad;
+
+public class DeGrado extends Alumno{
+    
+    private String carrera;
+    
+    public DeGrado(int dni, String nombre, int n, String carrera){
+        super(dni,nombre,n);
+        this.carrera = carrera;
+    }
+    
+   public String Determinar(){
+        int i=0;
+        String aux="No esta graduado";
+        boolean fin=false;
+        while(!fin && i < super.getCantAprobadas()){
+            if(super.getCantAprobadas() == super.CantMaterias())
+                if(super.getMateria(i).getNombre().equals("Tesis")){
+                    fin = true;
+                    aux = "Esta Graduado";
+                }
+            i++;
+       }
+       return aux;
+   }
+   
+   public String toString(){
+        String aux="";
+            for(int i=0; i<super.getCantAprobadas(); i++){
+            aux = aux + super.getMateria(i);
+            }
+        return super.toString() + " " + aux + this.Determinar() + " " + carrera;
+   }
+    
+}
+
+--------------------------------------------------------------------------------------------------
+
+package Facultad;
+
+public class DeDoctorado extends Alumno{
+    
+    private String titulo;
+    private String universidad;
+    
+    public DeDoctorado(int dni, String nombre, int n, String titulo, String universidad){
+        super(dni,nombre,n);
+        this.titulo = titulo;
+        this.universidad = universidad;
+    }
+    
+    public String Determinar(){
+        int i=0;
+        String aux="No esta graduado";
+        boolean fin=false;
+        while(!fin && i < super.getCantAprobadas()){
+            if(super.getCantAprobadas() == super.CantMaterias())
+                if(super.getMateria(i).getNombre().equals("Tesis")){
+                    fin = true;
+                    aux = "Esta Graduado";
+                }
+            i++;
+       }
+       return aux;
+   }
+    
+   public String toString(){
+        String aux="";
+        for(int i=0; i<super.getCantAprobadas(); i++){
+            aux = aux + super.getMateria(i);
+        }
+        return super.toString() + " " + aux + this.Determinar() + " " + titulo;
+   } 
+    
+    
+    
+}
+
+--------------------------------------------------------------------------------------------------
+
+package Facultad;
+
+public class Materia {
+    
+    private String nombre;
+    private double nota;
+    private String fecha;
+    
+    public Materia(String nombre, double nota, String fecha){
+        this.nombre = nombre;
+        this.nota = nota;
+        this.fecha = fecha;
+    }
+    
+    public String getNombre(){
+        return nombre;
+    }
+    
+    public double getNota(){
+        return nota;
+    }
+    
+    public String getFecha(){
+        return fecha;
+    }
+    
+    public void setNombre(String nombre){
+        this.nombre = nombre;
+    }
+    
+    public void setNota(double nota){
+        this.nota = nota;
+    }
+    
+    public void setFecha(String fecha){
+        this.fecha = fecha;
+    }
+    
+    public String toString(){
+        return nombre + " " + nota + " " + fecha + " ";
+    }
+    
+}

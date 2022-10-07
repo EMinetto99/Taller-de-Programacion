@@ -1,0 +1,107 @@
+Una obra social dispone de un árbol binario de búsqueda con la información de sus
+afiliados. De cada afiliado se conoce: Número de afiliado, Nro de DNI, Plan (1..5) y año de
+ingreso a la obra social. El árbol se encuentra ordenado por número de afiliado. Se solicita:
+
+Implementar un módulo que reciba el árbol de afiliados, Nro de DNI Num1, Nro de DNI
+Num2 y un número de Plan, y retorne un vector ordenado por Nro de DNI del afiliado. El
+vector debe contener el número de afiliado y DNI de aquellos afiliados cuyo Nro de DNI se
+encuentra comprendido entre Num1 y Num2 (siendo Num1 menor que Num2) y el Plan se
+corresponda con el recibido por parámetro. Por norma de la obra social, cada Plan puede
+contar con a lo sumo 500 afiliados.
+
+//-------------------------------------------------------------------------------------------------------------------
+
+program ObraSocial;
+Uses crt;
+const
+  df = 5;
+  df2 = 500;
+type
+  rango = 1..df;
+
+  afiliado = record
+    nro : integer;
+    dni : integer;
+    plan : rango;
+    ingreso : integer;
+  end;
+
+  arbol = ^nodo;
+
+  nodo = record
+    dato : afiliado;
+    hi : arbol;
+    hd : arbol;
+  end;
+
+  regV = record
+    nro : integer;
+    dni : integer;
+  end;
+
+  vector = array[1..df2] of regV;
+
+procedure cargarArbol(var a : arbol); // Se dispone
+begin
+end;
+
+procedure ordenarPorInsercion(var v : vector; dl : integer);
+var
+  i, j : integer;
+  aux : regV;
+begin
+  for i := 2 to dl do begin
+    aux := v[i];
+    j := i - 1;
+    while(j < 0) and (v[j].dni > aux.dni) do begin
+      v[j+1] := v[j];
+      j := j - 1;
+    end;
+      v[j+1] := aux;
+  end;
+end;
+
+procedure recorridoAcotado(var v : vector; a : arbol; inf, sup, plan : integer; var dl : integer);
+begin
+  if(a <> nil) then begin
+    if(a^.dato.dni >= inf) then
+      if(a^.dato.dni <= sup) then begin
+        if(a^.dato.plan = plan) then begin
+          if(dl < df) then begin
+            dl := dl + 1;
+            v[dl].nro := a^.dato.nro;
+            v[dl].dni := a^.dato.dni;
+          end;
+        end;
+        recorridoAcotado(v,a^.hi,inf,sup,plan,dl);
+        recorridoAcotado(v,a^.hd,inf,sup,plan,dl);
+      end
+    else
+      recorridoAcotado(v,a^.hi,inf,sup,plan,dl)
+    else
+     recorridoAcotado(v,a^.hd,inf,sup,plan,dl);
+  end
+  else
+    if(dl > 1) then
+      ordenarPorInsercion(v,dl);
+end;
+
+var
+  a : arbol;
+  inf, sup, plan, dl : integer;
+  v : vector;
+begin
+  clrscr;
+  a := nil;
+  dl := 0;
+
+  cargarArbol(a); // Se dispone
+
+  inf := 200;
+  sup := 800;
+  plan := 3;
+  recorridoAcotado(v,a,inf,sup,plan,dl);
+
+
+  readln;
+end.

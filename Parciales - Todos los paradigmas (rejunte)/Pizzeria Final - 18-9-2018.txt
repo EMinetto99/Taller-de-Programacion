@@ -1,0 +1,171 @@
+program parcial_imperativo_2018;
+Uses crt;
+type
+
+  pedilista = record
+    fecha : String[20];
+    monto : real;
+  end;
+
+  lista = ^nodo;
+
+  nodo = record
+    dato : pedilista;
+    sig : lista;
+  end;
+
+  cliente = record
+    dni : integer;
+    nombre : String[20];
+    pedidos : lista;
+  end;
+
+  arbol = ^hoja;
+
+  hoja = record
+    dato : cliente;
+    hi : arbol;
+    hd : arbol;
+  end;
+
+
+procedure leer(var p : cliente; var pe : pedilista);
+begin
+
+  write('Ingrese monto ');
+  readln(pe.monto);
+  if(pe.monto <> 0) then begin
+    write('Ingrese dni ');
+    readln(p.dni);
+    write('Ingrese nombre ');
+    readln(p.nombre);
+    write('Ingresar fecha ');
+    readln(pe.fecha);
+  end;
+
+end;
+
+procedure agregarPedido(var l : lista; pe : pedilista);
+var
+  nue : lista;
+begin
+  new(nue);
+  nue^.dato.fecha := pe.fecha;
+  nue^.dato.monto := pe.monto;
+  nue^.sig := l;
+  l := nue;
+end;
+
+
+procedure crearArbol(var a : arbol; p : cliente; pe : pedilista);
+begin
+
+  if(a = nil) then begin
+    new(a);
+    a^.dato.dni := p.dni;
+    a^.dato.nombre := p.nombre;
+    a^.dato.pedidos := nil;
+    agregarPedido(a^.dato.pedidos,pe);
+    a^.hi := nil;
+    a^.hd := nil;
+  end
+  else
+    if(p.dni < a^.dato.dni) then
+      crearArbol(a^.hi,p,pe)
+    else
+      if(p.dni > a^.dato.dni) then
+        crearArbol(a^.hd,p,pe)
+      else
+        if(p.dni = a^.dato.dni) then
+          agregarPedido(a^.dato.pedidos,pe);
+
+end;
+
+procedure cargarArbol(var a : arbol);
+var
+  p : cliente;
+  pe : pedilista;
+begin
+
+  leer(p,pe);
+  while(pe.monto <> 0) do begin
+
+    crearArbol(a,p,pe);
+
+    leer(p,pe);
+  end;
+
+end;
+
+procedure recorrerlista(l : lista; fechaIng : String; var cant : integer);
+begin
+  while(l <> nil) do begin
+      if(l^.dato.fecha = fechaIng) then
+        cant := cant + 1;
+        l  := l^.sig;
+    end;
+end;
+
+procedure obtenerCantPedidos(a : arbol; fechaIng : String; var cant : integer);
+begin
+
+  if(a <> nil) then begin
+    obtenerCantPedidos(a^.hi,fechaIng,cant);
+    recorrerlista(a^.dato.pedidos,fechaIng,cant);
+    obtenerCantPedidos(a^.hd,fechaIng,cant)
+  end;
+
+end;
+
+procedure recorrerParaTotales(l : lista; var totalAb : real; var totalPe : integer);
+begin
+  while(l <> nil) do begin
+        totalAb := totalAb + l^.dato.monto;
+        totalPe := totalPe + 1;
+        l  := l^.sig;
+      end;
+end;
+
+procedure obtenerTotales(a : arbol; dni : integer; var totalAb : real; var totalPe : integer);
+begin
+
+  if(a <> nil)  then begin
+    if(a^.dato.dni = dni) then
+      recorrerParaTotales(a^.dato.pedidos,totalAb,totalPe)
+      else
+        if(dni < a^.dato.dni ) then
+          obtenerTotales(a^.hi,dni,totalAb,totalPe)
+        else
+          obtenerTotales(a^.hd,dni,totalAb,totalPe)
+  end;
+
+end;
+
+var
+   a : arbol;
+   fechaIng : String[20];
+   cant, totalPe, dniIng : integer;
+   totalAb : real;
+begin
+  clrscr;
+  a := nil;
+  cant := 0;
+  totalAb := 0;
+  totalPe := 0;
+
+  cargarArbol(a);
+
+  writeln;
+  write('Ingrese una fecha para informar ');
+  readln(fechaIng);
+  obtenerCantPedidos(a,fechaIng,cant);
+  writeln('Cantidad de pedidos de la fecha ingresada ',cant);
+
+  writeln;
+  write('Ingrese dni ha calcular totales ');
+  readln(dniIng);
+  obtenerTotales(a,dniIng,totalAb,totalPe);
+  writeln('Total abonado ',totalAb:2:2,' total de pedidos ',totalPe);
+
+  readln;
+end.

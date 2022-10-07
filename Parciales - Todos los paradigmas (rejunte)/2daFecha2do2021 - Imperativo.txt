@@ -1,0 +1,153 @@
+program SegundaFecha2do2021;
+Uses crt;
+type
+
+  producto = record
+    codPro : integer;
+    cantidad : integer;
+  end;
+
+  lista2 = ^nodo2;
+
+  nodo2 = record
+    dato : producto;
+    sig : lista2;
+  end;
+
+  pedido = record
+    codPed : integer;
+    dni : integer;
+    compra : lista2;
+  end;
+
+  lista = ^nodo;
+
+  nodo = record
+    dato : pedido;
+    sig : lista;
+  end;
+
+  regPro = record
+    codPro : integer;
+    stock : integer;
+  end;
+
+  arbol = ^nodoArbol;
+
+  nodoArbol = record
+    dato : regPro;
+    hi : arbol;
+    hd : arbol;
+  end;
+
+  lista3 = ^nodo3;
+
+  nodo3 = record
+    dato : integer;
+    sig : lista3;
+  end;
+
+procedure cargarlista(var l : lista); // Se dispone
+begin
+end;
+
+procedure cargarArbol(var a : arbol); // Se dispone
+begin
+end;
+
+procedure crearArbol(var a : arbol; reg : producto);
+begin
+  if(a = nil) then begin
+    new(a);
+    a^.dato.codPro := reg.codPro;
+    a^.dato.stock := 0;
+    a^.hi := nil;
+    a^.hd := nil;
+  end
+  else
+    if(reg.codPro < a^.dato.codPro) then
+      crearArbol(a^.hi,reg)
+    else
+      if(reg.codPro > a^.dato.codPro) then
+        crearArbol(a^.hd,reg);
+end;
+
+procedure actualizarArbol(var a : arbol; reg : producto);
+begin
+  if(a <> nil) then begin
+    if(reg.codPro = a^.dato.codPro) then
+      a^.dato.stock := reg.cantidad
+    else
+      if(reg.codPro < a^.dato.codPro) then
+        actualizarArbol(a^.hi,reg)
+      else
+        if(reg.codPro > a^.dato.codPro) then
+          actualizarArbol(a^.hd,reg);
+  end
+  else
+    crearArbol(a,reg);
+end;
+
+procedure recorrerProductos(var a : arbol; l : lista2);
+begin
+  if(l <> nil) then begin
+    actualizarArbol(a,l^.dato);
+    recorrerProductos(a,l^.sig);
+  end;
+end;
+
+procedure ActualizarStock(var a : arbol; l : lista);
+begin
+  if(l <> nil) then begin
+    recorrerProductos(a,l^.dato.compra);
+    ActualizarStock(a,l^.sig);
+  end;
+end;
+
+procedure agregarAdelante(var l : lista3; cod : integer);
+var
+  aux : lista3;
+begin
+  new(aux);
+  aux^.dato := cod;
+  aux^.sig := l;
+  l := aux;
+end;
+
+procedure crearlista(var l : lista3; a : arbol; inf, sup : integer);
+begin
+  if(a <> nil) then
+    if(a^.dato.codPro >= inf) then
+      if(a^.dato.codPro <= sup) then begin
+        if(a^.dato.stock = 0) then
+          agregarAdelante(l,a^.dato.codPro);
+        crearlista(l,a^.hi,inf,sup);
+        crearlista(l,a^.hd,inf,sup);
+      end
+    else
+      crearlista(l,a^.hi,inf,sup)
+    else
+      crearlista(l,a^.hd,inf,sup);
+end;
+
+var
+  l : lista; // Se dispone
+  a : arbol; // Se dispone
+  stock0 : lista3;
+  inf, sup : integer;
+begin
+  clrscr;
+  l := nil;
+  a := nil;
+
+  cargarlista(l); // Se dispone
+  cargarArbol(a); // Se dispone
+
+  ActualizarStock(a,l);
+
+  inf := 100;
+  sup := 300;
+  crearlista(stock0,a,inf,sup);
+
+  readln;
+end.

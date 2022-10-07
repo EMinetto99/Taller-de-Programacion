@@ -1,0 +1,156 @@
+program Ejer3Tp1;
+
+const
+    MaxRubro=8;
+    MaxParaElRubro3 = 30;
+type
+    rangoRubro= 1..MaxRubro;
+    RangoRubro3=1..MaxParaElRubro3;
+
+    producto = record
+        codProducto: integer;
+        codRubro:   rangoRubro;
+        precio: real;
+    end;
+    
+    lista = ^nodo;
+    
+    nodo = record
+        dato:producto;
+        sig:lista;
+    end;
+    
+    vectorLista = array [rangoRubro] of lista;
+    
+    vectorRubro3x30elementos =array [RangoRubro3] of producto;
+
+procedure CargarProductos (var vL:vectorLista);
+    
+    procedure LeerProducto (var p:producto);
+        begin
+            write('Precio: ');{readln(}p.precio:=(random(50));writeln(p.precio:5:2);                            //AGREGE RANDOMS PARA NO CARGAR A MANO CADA VEZ
+            if (p.precio<>0) then                                                           //CUANDO NO LOS QUIERO USAR LOS BORRO , BORRO LAS LLAVES
+                begin                                                                       // Y DEBERIA SALIR ANDANDO (IGUAL YA LO HABIA PROBADO A MANO)
+                    write('Codigo: ');{readln}p.codProducto:=random(300) {)};writeln(p.codProducto);
+                    write('Rubro: ');{readln}p.codRubro:=random(MaxRubro)+1{)};writeln(p.codRubro);
+                    writeln('-----------');
+                end;
+        end;
+
+    procedure AgregarOrdenado (var L:lista; p:producto);
+        var
+            nue,act,ant:lista;
+        begin
+            new(nue);
+            nue^.dato:=p;
+            nue^.sig:=nil;
+            act:=L;
+            ant:=L;
+            while ((act<>nil)and(L^.dato.codProducto > p.codProducto ))do
+                begin
+                    ant:=act;
+                    act:=act^.sig;
+                end;
+            if (act=ant)then
+                begin
+                    L:=nue;
+                end
+            else
+                begin
+                    ant^.sig:=nue;
+                end;
+            nue^.sig:=act;
+        end;
+    
+    var
+        p:producto;
+    begin
+        LeerProducto (p);
+        while (p.precio<>0)do
+            begin
+                AgregarOrdenado(vL[p.codRubro],p); //iniciar vL en nil
+                LeerProducto(p);
+            end;
+    end;
+
+procedure Imprimir (vL:vectorLista);
+	var
+		i:integer;
+	begin
+		for i:=1 to MaxRubro do
+			begin
+				writeln ('Rubro: ',i);
+				while (vL[i]<>nil) do
+					begin
+						writeln('                      .-.-.-.-.-.-.-.');
+						writeln('                      Codigo: ',vL[i]^.dato.codProducto);
+						writeln('                      Rubro: ',vL[i]^.dato.codRubro);
+						writeln('                      Precio: ',vL[i]^.dato.precio:5:2);
+						writeln('                      .-.-.-.-.-.-.-.');
+						vL[i]:=vL[i]^.sig;
+					end;
+			end;
+	end;
+
+procedure ArmarVectorRubro3 ( L:lista;var vR3:vectorRubro3x30elementos;var i:integer);         //TENGO UN PROBLEMA ACA , QUE NO ME VA RECORRIENDO LA LISTA QUE TENGO EL vL
+    var
+        x:integer;
+    begin
+        i:=0;
+        while (L<>nil)and(i<MaxParaElRubro3) do
+            begin
+                i:=i+1;
+                vR3[i]:=L^.dato;
+                L:=L^.sig;
+            end;
+        writeln('Primeros 30 productos del Rubro 3:');
+        for x:=1 to i do
+            begin
+                writeln('                            Codigo: ',vR3[x].codProducto);
+                writeln('       ',x,'                    Precio: ',vR3[x].precio:10:2);
+                writeln('                            -----------------------');
+            end;
+    end;
+
+procedure OrdenarVectorRubro3 (var vR3:vectorRubro3x30elementos;Dim:integer);
+    var
+        i,j:integer;
+        item:producto;
+    begin
+        for i:=2 to Dim do
+            begin
+                j:=i-1;
+                item:=vR3[i];
+                while (vR3[j].precio < item.precio) and (j>0)do
+                    begin
+                        vR3[j+1]:=vR3[j];
+                        j:=j-1
+                    end;
+                vR3[j+1]:=item;
+            end;
+    end;
+    
+procedure ImprimirVector30Ordenado (vR3:vectorRubro3x30elementos;Dim:integer);
+    var
+        i:integer;
+    begin
+        for i:=1 to Dim do
+            begin
+                writeln(i);
+                writeln('Codigo:',vR3[i].codProducto);
+                writeln('Precio:',vR3[i].precio:10:2);
+                writeln('------');
+            end;
+    end;
+    
+var
+    vL: vectorLista; Dim:integer;
+    vR3: vectorRubro3x30elementos;
+begin
+    randomize;
+    CargarProductos (vL);
+    Imprimir(vL);
+    ArmarVectorRubro3(vL[3],vR3,Dim);
+    OrdenarVectorRubro3(vR3,Dim);
+    ImprimirVector30Ordenado(vR3,Dim);
+end.
