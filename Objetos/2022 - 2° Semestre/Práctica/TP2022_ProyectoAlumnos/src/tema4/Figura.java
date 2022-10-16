@@ -9,12 +9,12 @@ package tema4;
 public abstract class Figura {
     private String colorRelleno;
     private String colorLinea;
-   
+
     public Figura(String unCR, String unCL){
         setColorRelleno(unCR);
         setColorLinea(unCL);
     }
-    
+
     public String toString(){
         String aux = "Area: " + this.calcularArea() +
                      " CR: "  + getColorRelleno() + 
@@ -22,7 +22,7 @@ public abstract class Figura {
              return aux;
        }
 
-    
+
     public String getColorRelleno(){
         return colorRelleno;       
     }
@@ -35,8 +35,11 @@ public abstract class Figura {
     public void setColorLinea(String unColor){
         colorLinea = unColor;       
     }
-    
-    public abstract double calcularArea();
-    public abstract double calcularPerimetro();
-     
+
+    public void despintar(){
+        colorRelleno = "blanco";
+        colorLinea = "negra";
+    }
+    public abstract Double calcularArea();
+    public abstract Double calcularPerimetro();
 }

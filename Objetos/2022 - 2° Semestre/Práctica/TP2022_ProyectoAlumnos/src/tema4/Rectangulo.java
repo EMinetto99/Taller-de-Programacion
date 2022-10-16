@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tema4;
 
 public class Rectangulo extends Figura{
@@ -32,12 +27,12 @@ public class Rectangulo extends Figura{
     }
 
    
-    public double calcularArea() {
+    public Double calcularArea() {
         return (getBase()*getAltura()); 
     }
 
   
-    public double calcularPerimetro() {
+    public Double calcularPerimetro() {
         return (2*getBase()+2*getAltura());
     }
     
@@ -46,9 +41,5 @@ public class Rectangulo extends Figura{
                     " Base: " + getBase() +
                     " Altura: " + getAltura();
        return aux;
-    }
-
-    
-    
-    
+    }   
 }

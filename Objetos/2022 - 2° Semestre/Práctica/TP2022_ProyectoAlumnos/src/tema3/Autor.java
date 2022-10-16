@@ -8,6 +8,8 @@ public class Autor {
     
     // Atributos
     // Constructores y Sobrecarga de Constructores
+    public Autor(){
+    }
     public Autor(String nombre){
         this.nombre = nombre;
         this.biografia = "Desconocida";
@@ -39,12 +41,12 @@ public class Autor {
     public void setBiografia(String biografia){
         this.biografia = biografia;
     }
-    public void setorigen(String origen){
+    public void setOrigen(String origen){
         this.origen = origen;
     }
     
     @Override
     public String toString(){
-        return "{Nombre del autor: "+getNombre()+", biografia: "+getBiografia()+", origen: "+getOrigen()+"} ";
+        return getNombre()+", biografia: "+getBiografia()+", origen: "+getOrigen();
     }
 }

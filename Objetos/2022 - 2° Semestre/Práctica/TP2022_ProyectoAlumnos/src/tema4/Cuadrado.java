@@ -1,6 +1,5 @@
 package tema4;
 
-
 public class Cuadrado extends Figura{
     
     private double lado;
@@ -19,11 +18,11 @@ public class Cuadrado extends Figura{
         lado=unLado;
     }
 
-    public double calcularArea(){
+    public Double calcularArea(){
        return (getLado()* getLado());
     }
     
-    public double calcularPerimetro(){
+    public Double calcularPerimetro(){
        return (getLado()*4);
     }
     
@@ -32,6 +31,4 @@ public class Cuadrado extends Figura{
                     " Lado: " + getLado();
        return aux;
     }
-
- 
 }

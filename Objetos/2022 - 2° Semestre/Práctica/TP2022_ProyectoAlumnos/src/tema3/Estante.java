@@ -2,20 +2,29 @@ package tema3;
 
 public class Estante {
     // Atributos
-    private final int max_libros = 20;
+    private int max_libros;
     private int dimL;
     private int cant_libros;
     private Libro vec_libros[];     // Vector de libros
-    
+
     // Constructores - Métodos
     public Estante(){
         cant_libros = 0;
         dimL = 0;
+        vec_libros = new Libro[max_libros = 20];
+    }
+    public Estante(int cant_Espacio){
+        cant_libros = 0;
+        dimL = 0;
+        max_libros = cant_Espacio;
         vec_libros = new Libro[max_libros];
     }
-    
+
     public int cantLibros(){
         return cant_libros;
+    }
+    public int cantEspacioEstante(){
+        return max_libros;
     }
     public String estaLleno_String(){
         String ans;
@@ -46,12 +55,34 @@ public class Estante {
         int i = 0;
         boolean encontre = false;
         while ((i<max_libros) && (!encontre)){
-            if (nom_Libro.equals(vec_libros[i].getTitulo())){
-                encontre = true;
-                book = vec_libros[i];
+            if (vec_libros[i] != null){
+                if (nom_Libro.equals(vec_libros[i].getTitulo())){
+                    encontre = true;
+                    book = vec_libros[i];
+                }
             }
             i++;
         }
         return book;
+    }
+
+    private String verLibros(){
+        String str = "Estante ";
+        String aux = "";
+        for (int i = 0; i < max_libros; i++){
+            if (vec_libros[i] != null){
+                str += "[";
+                aux = vec_libros[i].toString();
+                str += aux +"]";
+            } else {
+                str+="[null]";
+            }
+        }
+        return str;
+    }
+
+    @Override
+    public String toString() {
+        return verLibros();
     }
 }
