@@ -1,0 +1,93 @@
+programa ejer2
+procesos
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso procesarEsquina(ES cF: numero; ES cP: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF:=cF+1
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+        cP:=cP+1
+  fin
+  proceso procesarAncho(ES cF: numero; ES cP: numero)
+  comenzar
+    procesarEsquina(cF,cP)
+    mover
+  fin
+  proceso procesarAlto(ES cF: numero; ES cP: numero)
+  variables
+    rndm: numero
+  comenzar
+    Random(rndm,1,5)
+    repetir (rndm)
+      procesarEsquina(cF,cP)
+      mover
+  fin
+  proceso Escalon(ES cantMasFqueP: numero)
+  variables
+    cantF, cantP: numero
+  comenzar
+    cantF:=0
+    cantP:=0
+    procesarAlto(cantF,cantP)
+    derecha
+    procesarAncho(cantF,cantP)
+    izquierda
+    si cantF>cantP
+      cantMasFqueP:=cantMasFqueP+1
+  fin
+  proceso Escalera(ES cantMasFqueP: numero)
+  comenzar
+    repetir 4
+      Escalon(cantMasFqueP)
+  fin
+areas
+  area: AreaC(2,1,100,100)
+  area2: AreaP(1,1,1,1)
+robots
+  robot escalero
+  variables
+    cantMasFqueP, posAv: numero
+  comenzar
+    cantMasFqueP:=0
+    RecibirMensaje(posAv,grievous)
+    Pos(posAv,1)
+    Escalera(cantMasFqueP)
+    EnviarMensaje(cantMasFqueP,grievous)
+  fin
+  robot jefe
+  variables
+    cantTotal, cant: numero
+  comenzar
+    cantTotal:=0
+    EnviarMensaje(2,r2d2)  {Avenida robot1}
+    EnviarMensaje(7,c3po)  {Avenida robot2}
+    EnviarMensaje(12,bb8)  {Avenida robot3}
+    repetir 3
+      RecibirMensaje(cant,*)
+      cantTotal:=cantTotal+cant
+    Informar(cantTotal)
+  fin
+variables
+  r2d2: escalero
+  c3po: escalero
+  bb8: escalero
+  grievous: jefe
+comenzar
+  AsignarArea(r2d2,area)
+  AsignarArea(c3po,area)
+  AsignarArea(bb8,area)
+  AsignarArea(grievous,area2)
+  Iniciar(r2d2,2,1)
+  Iniciar(c3po,7,1)
+  Iniciar(bb8,12,1)
+  Iniciar(grievous,1,1)
+fin
+

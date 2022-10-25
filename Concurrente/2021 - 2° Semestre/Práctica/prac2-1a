@@ -1,0 +1,53 @@
+programa ejer1
+procesos
+  proceso procesarEsquina(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF:=cF+1
+  fin
+  proceso procesarAvenida(ES cF: numero)
+  comenzar
+    repetir 9
+      procesarEsquina(cF)
+      mover
+    procesarEsquina(cF)
+  fin
+areas
+  area1: AreaP(1,1,1,10)
+  area2: AreaP(2,11,2,20)
+robots
+  robot robot1
+  variables
+    cantF, cantOtro, robot1_diferencia: numero
+  comenzar
+    cantF:=0
+    procesarAvenida(cantF)
+    EnviarMensaje(cantF,c3po)
+    RecibirMensaje(cantOtro,c3po)
+    si (cantF>cantOtro)
+      robot1_diferencia:=(cantF)-(cantOtro)
+      Informar(robot1_diferencia)
+  fin
+  robot robot2
+  variables
+    cantF, cantOtro, robot2_diferencia: numero
+  comenzar
+    cantF:=0
+    procesarAvenida(cantF)
+    EnviarMensaje(cantF,r2d2)
+    RecibirMensaje(cantOtro,r2d2)
+    si (cantF>cantOtro)
+      robot2_diferencia:=(cantF)-(cantOtro)
+      Informar(robot2_diferencia)
+  fin
+variables
+  r2d2: robot1
+  c3po: robot2
+comenzar
+  AsignarArea(r2d2,area1)
+  AsignarArea(c3po,area2)
+  Iniciar(r2d2,1,1)
+  Iniciar(c3po,2,11)
+fin

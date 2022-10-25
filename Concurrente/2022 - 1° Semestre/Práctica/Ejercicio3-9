@@ -1,0 +1,73 @@
+programa ejercicio39
+procesos
+  proceso procesarEsquinaF(ES cF: numero; ES hay: boolean)
+  comenzar
+    si HayFlorEnLaEsquina
+      tomarFlor
+      cF:=cF+1
+    si ~(HayFlorEnLaEsquina)
+      hay:=F
+  fin
+areas
+  areaR1: AreaP(9,9,9,9)
+  areaR2: AreaP(11,9,11,9)
+  areaR3: AreaP(13,9,13,9)
+  areaJefe: AreaP(1,9,1,9)
+  areaVivero: AreaPC(15,23,15,23)
+robots
+  robot florero
+  variables
+    posAv, posCa, flores: numero
+    hay: boolean
+  comenzar
+    RecibirMensaje(hay,boss)
+    posAv:=PosAv
+    posCa:=PosCa
+    mientras (hay)
+      BloquearEsquina(15,23)
+      Pos(15,23)
+      procesarEsquinaF(flores,hay)
+      Pos(posAv,posCa)
+      LiberarEsquina(15,23)
+      EnviarMensaje(hay,boss)  {Avisamos al jefe si hay o no flores, para seguir enviando robots}
+      RecibirMensaje(hay,boss)  {Senial del jefe; de que debe ir el; hay flores}
+    Informar('Cantidad_de_flores_juntadas_',flores)
+  fin
+  robot jefe
+  variables
+    flores, quien: numero
+    hayF: boolean
+  comenzar
+    hayF:=V
+    mientras (hayF)
+      Random(quien,1,3)  {Elegimos robot al azar}
+      si (quien=1)  {Mandamos mensaje a quien mandamos a trabajar}
+        EnviarMensaje(hayF,r2d2)
+      sino
+        si (quien=2)
+          EnviarMensaje(hayF,c3po)
+        sino
+          EnviarMensaje(hayF,bb8)
+      RecibirMensaje(hayF,*)  {Esperamos respuesta de el; De que si hay flores en la esquina}
+    EnviarMensaje(hayF,r2d2)
+    EnviarMensaje(hayF,c3po)
+    EnviarMensaje(hayF,bb8)
+  fin
+variables
+  r2d2: florero
+  c3po: florero
+  bb8: florero
+  boss: jefe
+comenzar
+  AsignarArea(r2d2,areaR1)
+  AsignarArea(c3po,areaR2)
+  AsignarArea(bb8,areaR3)
+  AsignarArea(boss,areaJefe)
+  AsignarArea(r2d2,areaVivero)
+  AsignarArea(c3po,areaVivero)
+  AsignarArea(bb8,areaVivero)
+  Iniciar(r2d2,9,9)
+  Iniciar(c3po,11,9)
+  Iniciar(bb8,13,9)
+  Iniciar(boss,1,9)
+fin

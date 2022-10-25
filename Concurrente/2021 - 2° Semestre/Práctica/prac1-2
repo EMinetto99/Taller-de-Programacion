@@ -1,0 +1,56 @@
+programa ejer2
+procesos
+  proceso recorrerLado
+  variables
+    cantFlores: numero
+  comenzar
+    cantFlores:=0
+    repetir 19
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cantFlores:=cantFlores+1
+      mover
+    Informar(cantFlores)
+  fin
+areas
+  area1: AreaP(10,10,10,29)
+  area2: AreaP(10,30,29,30)
+  area3: AreaP(30,11,30,30)
+  area4: AreaP(11,10,30,10)
+robots
+  robot robot1
+  comenzar
+    recorrerLado
+  fin
+  robot robot2
+  comenzar
+    derecha
+    recorrerLado
+  fin
+  robot robot3
+  comenzar
+    repetir 2
+      derecha
+    recorrerLado
+  fin
+  robot robot4
+  comenzar
+    repetir 3
+      derecha
+    recorrerLado
+  fin
+variables
+  florero1: robot1
+  florero2: robot2
+  florero3: robot3
+  florero4: robot4
+comenzar
+  AsignarArea(florero1,area1)
+  AsignarArea(florero2,area2)
+  AsignarArea(florero3,area3)
+  AsignarArea(florero4,area4)
+  Iniciar(florero1,10,10)
+  Iniciar(florero2,10,30)
+  Iniciar(florero3,30,30)
+  Iniciar(florero4,30,10)
+fin

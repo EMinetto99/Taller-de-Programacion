@@ -1,0 +1,169 @@
+programa ejer2
+procesos
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso procesarEsquinaF(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF:=cF+1
+  fin
+  proceso procesarEsquinaP(ES cP: numero)
+  comenzar
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+        cP:=cP+1
+  fin
+  proceso alto(E num: numero)
+  comenzar
+    repetir (num)
+      mover
+  fin
+  proceso anchoF(E num: numero; ES cF: numero)
+  comenzar
+    procesarEsquinaF(cF)
+    repetir (num)
+      mover
+    procesarEsquinaF(cF)
+  fin
+  proceso primeros4EscF(ES cF: numero)
+  variables
+    num: numero
+  comenzar
+    num:=5
+    repetir 4
+      alto(num)
+      derecha
+      anchoF(num,cF)
+      izquierda
+      num:=(num)-1
+  fin
+  proceso ultimoEscF(ES cF: numero)
+  variables
+    quienSoy: numero
+  comenzar
+    quienSoy:=1
+    mover
+    derecha
+    BloquearEsquina(16,16)
+    mover
+    EnviarMensaje(quienSoy,grievous)
+    repetir 2
+      derecha
+    mover
+    LiberarEsquina(16,16)
+  fin
+  proceso ultimos4EscF(ES cF: numero)
+  variables
+    num: numero
+  comenzar
+    num:=2
+    repetir 4
+      anchoF(num,cF)
+      derecha
+      alto(num)
+      izquierda
+      num:=(num)+1
+  fin
+  proceso anchoP(E num: numero; ES cP: numero)
+  comenzar
+    procesarEsquinaP(cP)
+    repetir (num)
+      mover
+    procesarEsquinaP(cP)
+  fin
+  proceso primeros4EscP(ES cP: numero)
+  variables
+    num: numero
+  comenzar
+    num:=5
+    repetir 4
+      alto(num)
+      izquierda
+      anchoP(num,cP)
+      derecha
+      num:=(num)-1
+  fin
+  proceso ultimoEscP(ES cP: numero)
+  variables
+    quienSoy: numero
+  comenzar
+    quienSoy:=2
+    mover
+    izquierda
+    BloquearEsquina(16,16)
+    mover
+    EnviarMensaje(quienSoy,grievous)
+    repetir 2
+      derecha
+    mover
+    LiberarEsquina(16,16)
+  fin
+  proceso ultimos4EscP(ES cP: numero)
+  variables
+    num: numero
+  comenzar
+    num:=2
+    repetir 4
+      anchoP(num,cP)
+      izquierda
+      alto(num)
+      derecha
+      num:=(num)+1
+  fin
+areas
+  area: AreaC(1,1,100,100)
+robots
+  robot florero
+  variables
+    cantF, num: numero
+  comenzar
+    cantF:=0
+    primeros4EscF(cantF)
+    ultimoEscF(cantF)
+    ultimos4EscF(cantF)
+    EnviarMensaje(1,grievous)
+    Informar(cantF)
+  fin
+  robot papelero
+  variables
+    cantP: numero
+  comenzar
+    cantP:=0
+    primeros4EscP(cantP)
+    ultimoEscP(cantP)
+    ultimos4EscP(cantP)
+    EnviarMensaje(2,grievous)
+    Informar(cantP)
+  fin
+  robot jefe
+  variables
+    quien, ganador: numero
+  comenzar
+    RecibirMensaje(quien,*)
+    si (quien=1)
+      ganador:=1
+    sino
+      ganador:=2
+    RecibirMensaje(quien,*)
+    RecibirMensaje(quien,*)
+    RecibirMensaje(quien,*)
+    Informar('ROBOT_GANADOR',ganador)
+  fin
+variables
+  r2d2: florero
+  c3po: papelero
+  grievous: jefe
+comenzar
+  AsignarArea(r2d2,area)
+  AsignarArea(c3po,area)
+  AsignarArea(grievous,area)
+  Iniciar(r2d2,1,1)
+  Iniciar(c3po,31,1)
+  Iniciar(grievous,15,1)
+fin

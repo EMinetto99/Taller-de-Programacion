@@ -1,0 +1,79 @@
+programa ejer4
+procesos
+  proceso procesarEsqF
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+  fin
+  proceso procesarEsqP
+  comenzar
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+  fin
+  proceso procesarAvenidaFlor
+  comenzar
+    repetir 99
+      procesarEsqF
+      mover
+    procesarEsqF
+  fin
+  proceso procesarAvenidaPapel
+  comenzar
+    repetir 99
+      procesarEsqP
+      mover
+    procesarEsqP
+  fin
+  proceso procesarAreaImpar(E posAv: numero)
+  comenzar
+    Pos(posAv,1)
+    repetir 24
+      procesarAvenidaFlor
+      Pos((PosAv)+1,1)
+    procesarAvenidaFlor
+  fin
+  proceso procesarAreaPar(E posAv: numero)
+  comenzar
+    Pos(posAv,1)
+    repetir 24
+      procesarAvenidaPapel
+      Pos((PosAv)+1,1)
+    procesarAvenidaPapel
+  fin
+areas
+  area1: AreaC(1,1,25,100)
+  area2: AreaC(26,1,50,100)
+  area3: AreaC(51,1,75,100)
+  area4: AreaC(76,1,100,100)
+robots
+  robot robot1
+  variables
+    posAv: numero
+  comenzar
+    posAv:=1
+    procesarAreaImpar(posAv)
+    posAv:=51
+    procesarAreaImpar(posAv)
+  fin
+  robot robot2
+  variables
+    posAv: numero
+  comenzar
+    posAv:=26
+    procesarAreaPar(posAv)
+    posAv:=76
+    procesarAreaPar(posAv)
+  fin
+variables
+  r2d2: robot1
+  c3po: robot2
+comenzar
+  AsignarArea(r2d2,area1)
+  AsignarArea(r2d2,area3)
+  AsignarArea(c3po,area2)
+  AsignarArea(c3po,area4)
+  Iniciar(r2d2,1,1)
+  Iniciar(c3po,26,1)
+fin

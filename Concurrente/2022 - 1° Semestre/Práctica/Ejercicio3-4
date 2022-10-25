@@ -1,0 +1,52 @@
+programa ejercicio34
+procesos
+  proceso procesarEsquinaF(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF:=cF+1
+  fin
+  proceso procesarAvenida(ES cF: numero)
+  comenzar
+    repetir 20
+      procesarEsquinaF(cF)
+      mover
+    procesarEsquinaF(cF)
+  fin
+areas
+  areaR1: AreaP(15,15,30,35)
+  areaR2: AreaP(40,40,55,60)
+  areaDeposito: AreaPC(10,10,10,10)
+robots
+  robot florero
+  variables
+    posAv, firstAv, posCa, flores: numero
+  comenzar
+    firstAv:=(PosAv)
+    posAv:=(PosAv)
+    posCa:=(PosCa)
+    flores:=0
+    repetir 15
+      procesarAvenida(flores)
+      posAv:=posAv+1
+      Pos(posAv,posCa)
+    procesarAvenida(flores)
+    mientras HayFlorEnLaBolsa
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarFlor
+      Pos(firstAv,posCa)
+      LiberarEsquina(10,10)
+  fin
+variables
+  r2d2: florero
+  c3po: florero
+comenzar
+  AsignarArea(r2d2,areaR1)
+  AsignarArea(c3po,areaR2)
+  AsignarArea(r2d2,areaDeposito)
+  AsignarArea(c3po,areaDeposito)
+  Iniciar(r2d2,15,15)
+  Iniciar(c3po,40,40)
+fin

@@ -1,0 +1,170 @@
+programa ejerciosAdicional3
+areas
+  areaFuneteFlores: AreaP(10,12,10,12)
+  areaFuentePapeles: AreaP(10,10,10,10)
+  areaBase: AreaC(12,11,12,11)
+  areaRecorridoE1: AreaP(13,12,20,12)
+  areaRecorridoE2: AreaP(13,10,20,10)
+  areaRec_E1: AreaP(11,12,11,12)
+  areaDep_E1: AreaP(12,12,12,12)
+  areaRec_E2: AreaP(11,10,11,10)
+  areaDep_E2: AreaP(12,10,12,10)
+  areaFiscal: AreaP(20,11,20,11)
+robots
+  robot recolector1
+  variables
+    avIni, caIni, calles: numero
+    strobe: boolean
+  comenzar
+    calles:=7
+    avIni:=(PosAv)
+    caIni:=(PosCa)
+    repetir (calles+1)
+      Pos(10,12)
+      tomarFlor
+      BloquearEsquina(12,11)
+      Pos(12,11)
+      depositarFlor
+      Pos(avIni,caIni)
+      si (calles<9)
+        EnviarMensaje(V,RobotDepositador2)
+      sino
+        EnviarMensaje(F,RobotDepositador2)
+      LiberarEsquina(12,11)
+    RecibirMensaje(strobe,RobotDepositador1)
+    EnviarMensaje(1,fiscal)
+  fin
+  robot depositador1
+  variables
+    posAv, posCa: numero
+    strobe: boolean
+  comenzar
+    posAv:=(PosAv)
+    posCa:=(PosCa)
+    derecha
+    RecibirMensaje(strobe,RobotRecolector1)
+    si (strobe)
+      BloquearEsquina(12,11)
+      Pos(12,11)
+      tomarFlor
+      Pos(posAv+1,posCa)
+      posAv:=(PosAv)
+      LiberarEsquina(12,11)
+      depositarFlor
+      RecibirMensaje(strobe,RobotRecolector1)
+      mientras (strobe)
+        BloquearEsquina(12,11)
+        Pos(12,11)
+        tomarFlor
+        Pos(posAv,posCa)
+        LiberarEsquina(12,11)
+        depositarFlor
+        mover
+        posAv:=(PosAv)
+        RecibirMensaje(strobe,RobotRecolector1)
+      BloquearEsquina(12,11)
+      Pos(12,11)
+      tomarFlor
+      Pos(posAv,posCa)
+      LiberarEsquina(12,11)
+
+    EnviarMensaje(V,RobotRecolector1)
+    RecibirMensaje(strobe,RobotRecolector1)
+    EnviarMensaje(1,fiscal)
+  fin
+  robot recolector2
+  variables
+    avIni, caIni, calles: numero
+    strobe: boolean
+  comenzar
+    calles:=7
+    avIni:=(PosAv)
+    caIni:=(PosCa)
+    repetir (calles+1)
+      Pos(10,10)
+      tomarPapel
+      BloquearEsquina(12,11)
+      Pos(12,11)
+      depositarPapel
+      Pos(avIni,caIni)
+      si (calles<9)
+        EnviarMensaje(V,RobotDepositador2)
+      sino
+        EnviarMensaje(F,RobotDepositador2)
+      LiberarEsquina(12,11)
+    RecibirMensaje(strobe,RobotDepositador2)
+    EnviarMensaje(2,fiscal)
+  fin
+
+  robot depositador2
+  variables
+    posAv, posCa: numero
+    strobe: boolean
+  comenzar
+    posAv:=(PosAv)
+    posCa:=(PosCa)
+    derecha
+    RecibirMensaje(strobe,RobotRecolector2)
+    si (strobe)
+      BloquearEsquina(12,11)
+      Pos(12,11)
+      tomarPapel
+      Pos(posAv+1,posCa)
+      posAv:=(PosAv)
+      LiberarEsquina(12,11)
+      depositarPapel
+      RecibirMensaje(strobe,RobotRecolector2)
+      mientras (strobe)
+        BloquearEsquina(12,11)
+        Pos(12,11)
+        tomarPapel
+        Pos(posAv,posCa)
+        LiberarEsquina(12,11)
+        depositarPapel
+        mover
+        posAv:=(PosAv)
+        RecibirMensaje(strobe,RobotRecolector1)
+      BloquearEsquina(12,11)
+      Pos(12,11)
+      tomarPapel
+      Pos(posAv,posCa)
+      LiberarEsquina(12,11)
+    EnviarMensaje(V,RobotRecolector2)
+    RecibirMensaje(strobe,RobotRecolector2)
+    EnviarMensaje(2,fiscal)
+  fin
+  robot fiscalizador
+  variables
+    idWinner, messages: numero
+  comenzar
+    RecibirMensaje(idWinner,*)
+    repetir 3
+      RecibirMensaje(messages,*)
+    Informar('El_equipo_ganador_es_el_NRO_',idWinner)
+  fin
+variables
+  RobotRecolector1: recolector1
+  RobotDepositador1: depositador1
+  RobotRecolector2: recolector2
+  RobotDepositador2: depositador2
+  fiscal: fiscalizador
+comenzar
+  AsignarArea(RobotRecolector1,areaFuneteFlores)
+  AsignarArea(RobotRecolector2,areaFuentePapeles)
+  AsignarArea(RobotDepositador1,areaBase)
+  AsignarArea(RobotRecolector1,areaBase)
+  AsignarArea(RobotDepositador2,areaBase)
+  AsignarArea(RobotRecolector2,areaBase)
+  AsignarArea(RobotDepositador1,areaRecorridoE1)
+  AsignarArea(RobotDepositador2,areaRecorridoE2)
+  AsignarArea(RobotRecolector1,areaRec_E1)
+  AsignarArea(RobotDepositador1,areaDep_E1)
+  AsignarArea(RobotRecolector2,areaRec_E2)
+  AsignarArea(RobotDepositador2,areaDep_E2)
+  AsignarArea(fiscal,areaFiscal)
+  Iniciar(RobotRecolector1,11,12)
+  Iniciar(RobotDepositador1,12,12)
+  Iniciar(RobotRecolector2,11,10)
+  Iniciar(RobotDepositador2,12,10)
+  Iniciar(fiscal,20,11)
+fin

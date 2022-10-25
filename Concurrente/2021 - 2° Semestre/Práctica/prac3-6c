@@ -1,0 +1,246 @@
+programa ejer6
+procesos
+  proceso procesarEsqFlor(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF:=(cF)+1
+  fin
+  proceso procesarEsqPapel(ES cP: numero)
+  comenzar
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+        cP:=(cP)+1
+  fin
+  proceso cuadranteR1(ES cF: numero)
+  variables
+    dsblq: boolean
+    avAnt, caAnt, mode: numero
+  comenzar
+    mode:=1
+    dsblq:=V
+    repetir 4
+      repetir 6
+        procesarEsqFlor(cF)
+        avAnt:=PosAv
+        caAnt:=PosCa
+        si (mode=1)
+          BloquearEsquina(PosAv,(PosCa)+1)
+          dsblq:=F
+        sino
+          si (mode=2)
+            BloquearEsquina((PosAv)+1,PosCa)
+            dsblq:=F
+          sino
+            si (mode=3)
+              BloquearEsquina(PosAv,(PosCa)-1)
+              dsblq:=F
+            sino
+              BloquearEsquina((PosAv)-1,PosCa)
+              dsblq:=F
+        mover
+        si ~(dsblq)
+          LiberarEsquina(avAnt,caAnt)
+          dsblq:=V
+      derecha
+      mode:=(mode)+1
+  fin
+  proceso cuadranteR2(ES cF: numero; ES cP: numero)
+  variables
+    dsblq: boolean
+    avAnt, caAnt, mode: numero
+  comenzar
+    mode:=1
+    dsblq:=V
+    repetir 4
+      repetir 10
+        procesarEsqFlor(cF)
+        procesarEsqPapel(cP)
+        avAnt:=PosAv
+        caAnt:=PosCa
+        si (mode=1)
+          BloquearEsquina(PosAv,(PosCa)+1)
+          dsblq:=F
+        sino
+          si (mode=2)
+            BloquearEsquina((PosAv)+1,PosCa)
+            dsblq:=F
+          sino
+            si (mode=3)
+              BloquearEsquina(PosAv,(PosCa)-1)
+              dsblq:=F
+            sino
+              BloquearEsquina((PosAv)-1,PosCa)
+              dsblq:=F
+        mover
+        si ~(dsblq)
+          LiberarEsquina(avAnt,caAnt)
+          dsblq:=V
+      derecha
+      mode:=(mode)+1
+  fin
+  proceso cuadranteR3(ES cP: numero)
+  variables
+    dsblq: boolean
+    avAnt, caAnt, mode: numero
+  comenzar
+    mode:=1
+    dsblq:=V
+    repetir 4
+      repetir 7
+        procesarEsqPapel(cP)
+        avAnt:=PosAv
+        caAnt:=PosCa
+        si (mode=1)
+          BloquearEsquina(PosAv,(PosCa)+1)
+          dsblq:=F
+        sino
+          si (mode=2)
+            BloquearEsquina((PosAv)+1,PosCa)
+            dsblq:=F
+          sino
+            si (mode=3)
+              BloquearEsquina(PosAv,(PosCa)-1)
+              dsblq:=F
+            sino
+              BloquearEsquina((PosAv)-1,PosCa)
+              dsblq:=F
+        mover
+        si ~(dsblq)
+          LiberarEsquina(avAnt,caAnt)
+          dsblq:=V
+      derecha
+      mode:=(mode)+1
+  fin
+  proceso recorrerAvenida(ES posAv: numero; ES posCa: numero)
+  comenzar
+    mientras (HayFlorEnLaBolsa) | (HayPapelEnLaBolsa) & (PosCa<100)
+      si (HayPapelEnLaBolsa)
+        depositarPapel
+      si (HayFlorEnLaBolsa)
+        depositarFlor
+      BloquearEsquina(PosAv,(PosCa)+1)
+      mover
+      LiberarEsquina(PosAv,(PosCa)-1)
+    si (HayPapelEnLaBolsa)
+      depositarPapel
+    si (HayFlorEnLaBolsa)
+      depositarFlor
+    posAv:=PosAv
+    posCa:=PosCa
+  fin
+areas
+  areaComp: AreaPC(2,2,16,16)
+  areaAvenida: AreaPC(1,20,1,100)
+  areaCoordinador: AreaP(1,1,1,1)
+robots
+  robot robot1
+  variables
+    cantF, avIni, caIni, posAv, posCa, quienSoy: numero
+  comenzar
+    cantF:=0
+    avIni:=PosAv
+    caIni:=PosCa
+    RecibirMensaje(quienSoy,grievous)
+    cuadranteR1(cantF)
+    EnviarMensaje(quienSoy,grievous) {En primero que llega, es el ganador directo}
+    RecibirMensaje(posCa,grievous)  {Recibir calle y avenidad del robot jefe}
+    posAv:=1
+    BloquearEsquina(posAv,posCa)
+    Pos(posAv,posCa)
+    recorrerAvenida(posAv,posCa)
+    Pos(avIni,caIni)
+    LiberarEsquina(posAv,posCa)
+  fin
+  robot robot2
+  variables
+    cantF, cantP, avIni, caIni, posAv, posCa, quienSoy: numero
+  comenzar
+    cantF:=0
+    cantP:=0
+    avIni:=PosAv
+    caIni:=PosCa
+    RecibirMensaje(quienSoy,grievous)
+    cuadranteR2(cantF,cantP)
+    EnviarMensaje(quienSoy,grievous) {En primero que llega, es el ganador directo}
+    RecibirMensaje(posCa,grievous)  {Recibir calle y avenidad del robot jefe}
+    posAv:=1
+    BloquearEsquina(posAv,posCa)
+    Pos(posAv,posCa)
+    recorrerAvenida(posAv,posCa)
+    Pos(avIni,caIni)
+    LiberarEsquina(posAv,posCa)
+  fin
+  robot robot3
+  variables
+    cantP, avIni, caIni, posAv, posCa, quienSoy: numero
+  comenzar
+    cantP:=0
+    avIni:=PosAv
+    caIni:=PosCa
+    RecibirMensaje(quienSoy,grievous)
+    cuadranteR3(cantP)
+    EnviarMensaje(quienSoy,grievous) {En primero que llega, es el ganador directo}
+    RecibirMensaje(posCa,grievous)  {Recibir calle y avenidad del robot jefe}
+    posAv:=1
+    BloquearEsquina(posAv,posCa)
+    Pos(posAv,posCa)
+    recorrerAvenida(posAv,posCa)
+    Pos(avIni,caIni)
+    LiberarEsquina(posAv,posCa)
+  fin
+  robot jefe
+  variables
+    quien, primero, segundo, tercero: numero
+  comenzar
+    EnviarMensaje(1,r2d2)
+    EnviarMensaje(2,c3po)
+    EnviarMensaje(3,bb8)
+    RecibirMensaje(primero,*)
+    RecibirMensaje(segundo,*)
+    RecibirMensaje(tercero,*)
+    si (primero=1)
+      EnviarMensaje(20,r2d2)
+    sino
+      si (primero=2)
+        EnviarMensaje(20,c3po)
+      sino
+        si (primero=3)
+          EnviarMensaje(20,bb8)
+    si (segundo=1)
+      EnviarMensaje(21,r2d2)
+    sino
+      si (segundo=2)
+        EnviarMensaje(21,c3po)
+      sino
+        si (segundo=3)
+          EnviarMensaje(21,bb8)
+    si (tercero=1)
+      EnviarMensaje(21,r2d2)
+    sino
+      si (tercero=2)
+        EnviarMensaje(21,c3po)
+      sino
+        si (tercero=3)
+          EnviarMensaje(21,bb8)
+  fin
+variables
+  r2d2: robot1
+  c3po: robot2
+  bb8: robot3
+  grievous: jefe
+comenzar
+  AsignarArea(r2d2,areaComp)
+  AsignarArea(c3po,areaComp)
+  AsignarArea(bb8,areaComp)
+  AsignarArea(r2d2,areaAvenida)
+  AsignarArea(c3po,areaAvenida)
+  AsignarArea(bb8,areaAvenida)
+  AsignarArea(grievous,areaCoordinador)
+  Iniciar(r2d2,2,2)
+  Iniciar(c3po,5,5)
+  Iniciar(bb8,9,9)
+  Iniciar(grievous,1,1)
+fin

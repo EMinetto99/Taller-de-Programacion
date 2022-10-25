@@ -1,0 +1,110 @@
+programa ejer1
+procesos
+  proceso procesarEsquina(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF:=cF+1
+  fin
+  proceso procesarAvenida(E posA: numero; E posC: numero; ES cF: numero)
+  comenzar
+    Pos(posA,posC)
+    repetir 9
+      procesarEsquina(cF)
+      mover
+    procesarEsquina(cF)
+  fin
+areas
+  area1: AreaP(1,1,1,10)
+  area2: AreaP(2,11,2,20)
+  area3: AreaP(3,21,3,30)
+  area4: AreaP(4,31,4,40)
+  area5: AreaP(5,41,5,50)
+  area6: AreaP(6,51,6,60)
+  area7: AreaP(2,1,2,1)
+robots
+  robot florero
+  variables
+    cantF, posAv, posCa, quienSoy: numero
+  comenzar
+    cantF:=0
+    RecibirMensaje(quienSoy,grievous)
+    RecibirMensaje(posAv,grievous)
+    RecibirMensaje(posCa,grievous)
+    procesarAvenida(posAv,posCa,cantF)
+    EnviarMensaje(quienSoy,grievous)
+    EnviarMensaje(cantF,grievous)
+  fin
+  robot jefe
+  variables
+    quien, cantAct, maxCant, idWinner: numero
+  comenzar
+    maxCant:=-1
+    EnviarMensaje(1,r2d2)  {quien soy Robot1}
+    EnviarMensaje(2,c3po)  {quien soy Robot2}
+    EnviarMensaje(3,bb8)  {quien soy Robot3}
+    EnviarMensaje(4,droideka)  {quien soy Robot4}
+    EnviarMensaje(5,ig88)  {quien soy Robot5}
+    EnviarMensaje(6,gonk)  {quien soy Robot6}
+    EnviarMensaje(1,r2d2)  {Avenida Robot1}
+    EnviarMensaje(2,c3po)  {Avenida Robot2}
+    EnviarMensaje(3,bb8)  {Avenida Robot3}
+    EnviarMensaje(4,droideka)  {Avenida Robot4}
+    EnviarMensaje(5,ig88)  {Avenida Robot5}
+    EnviarMensaje(6,gonk)  {Avenida Robot6}
+    EnviarMensaje(1,r2d2)  {Calle Robot1}
+    EnviarMensaje(11,c3po)  {Calle Robot2}
+    EnviarMensaje(21,bb8)  {Calle Robot3}
+    EnviarMensaje(31,droideka)  {Calle Robot4}
+    EnviarMensaje(41,ig88)  {Calle Robot5}
+    EnviarMensaje(51,gonk)  {Calle Robot6}
+    repetir 6
+      RecibirMensaje(quien,*)
+      si (quien=1)
+        RecibirMensaje(cantAct,r2d2)
+      sino
+        si (quien=2) 
+          RecibirMensaje(cantAct,c3po)
+        sino
+          si (quien=3)
+            RecibirMensaje(cantAct,bb8)
+          sino
+            si (quien=4)
+              RecibirMensaje(cantAct,droideka)
+            sino
+              si (quien=5)
+                RecibirMensaje(cantAct,ig88)
+              sino
+                si (quien=6)
+                  RecibirMensaje(cantAct,gonk)
+      si (cantAct>maxCant)
+        maxCant:=cantAct
+        idWinner:=quien
+    Informar('Ganador_ROBOT',idWinner)
+    Informar(maxCant)
+  fin
+variables
+  r2d2: florero
+  c3po: florero
+  bb8: florero
+  droideka: florero
+  ig88: florero
+  gonk: florero
+  grievous: jefe
+comenzar
+  AsignarArea(r2d2,area1)
+  AsignarArea(c3po,area2)
+  AsignarArea(bb8,area3)
+  AsignarArea(droideka,area4)
+  AsignarArea(ig88,area5)
+  AsignarArea(gonk,area6)
+  AsignarArea(grievous,area7)
+  Iniciar(r2d2,1,1)
+  Iniciar(c3po,2,11)
+  Iniciar(bb8,3,21)
+  Iniciar(droideka,4,31)
+  Iniciar(ig88,5,41)
+  Iniciar(gonk,6,51)
+  Iniciar(grievous,2,1)
+fin

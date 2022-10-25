@@ -1,0 +1,47 @@
+programa ejercicio37
+procesos
+  proceso procesarEsquinaF(ES cF: numero; ES hay: boolean)
+  comenzar
+    si HayFlorEnLaEsquina
+      tomarFlor
+      cF:=cF+1
+    sino
+      hay:=F
+  fin
+areas
+  areaR1: AreaP(9,9,9,9)
+  areaR2: AreaP(11,9,11,9)
+  areaR3: AreaP(13,9,13,9)
+  areaDeposito: AreaPC(15,23,15,23)
+robots
+  robot florero
+  variables
+    posAv, posCa, flores: numero
+    hay: boolean
+  comenzar
+    hay:=V
+    posAv:=PosAv
+    posCa:=PosCa
+    mientras (hay)
+      BloquearEsquina(15,23)
+      Pos(15,23)
+      procesarEsquinaF(flores,hay)
+      Pos(posAv,posCa)
+      LiberarEsquina(15,23)
+    Informar('Cantidad_de_flores_juntadas_',flores)
+  fin
+variables
+  r2d2: florero
+  c3po: florero
+  bb8: florero
+comenzar
+  AsignarArea(r2d2,areaR1)
+  AsignarArea(c3po,areaR2)
+  AsignarArea(bb8,areaR3)
+  AsignarArea(r2d2,areaDeposito)
+  AsignarArea(c3po,areaDeposito)
+  AsignarArea(bb8,areaDeposito)
+  Iniciar(r2d2,9,9)
+  Iniciar(c3po,11,9)
+  Iniciar(bb8,13,9)
+fin

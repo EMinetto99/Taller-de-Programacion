@@ -1,0 +1,69 @@
+programa ejer1
+procesos
+  proceso procesarEsquina(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF:=cF+1
+  fin
+  proceso procesarAvenida(E posA: numero; E posC: numero; ES cF: numero)
+  comenzar
+    Pos(posA,posC)
+    repetir 9
+      procesarEsquina(cF)
+      mover
+    procesarEsquina(cF)
+  fin
+areas
+  area1: AreaP(1,1,1,10)
+  area2: AreaP(2,11,2,20)
+  area3: AreaP(2,1,2,1)
+robots
+  robot florero
+  variables
+    cantF, posAv, posCa, quienSoy: numero
+  comenzar
+    cantF:=0
+    RecibirMensaje(quienSoy,grievous)
+    RecibirMensaje(posAv,grievous)
+    RecibirMensaje(posCa,grievous)
+    procesarAvenida(posAv,posCa,cantF)
+    EnviarMensaje(quienSoy,grievous)
+    EnviarMensaje(cantF,grievous)
+  fin
+  robot jefe
+  variables
+    dif, quien, cantR1, cantR2: numero
+  comenzar
+    EnviarMensaje(1,r2d2)  {quien soy Robot1}
+    EnviarMensaje(2,c3po)  {quien soy Robot2}
+    EnviarMensaje(1,r2d2)  {Avenida Robot1}
+    EnviarMensaje(2,c3po)  {Avenida Robot2}
+    EnviarMensaje(1,r2d2)  {Calle Robot1}
+    EnviarMensaje(11,c3po)  {Calle Robot2}
+    repetir 2
+      RecibirMensaje(quien,*)
+      si (quien=1)
+        RecibirMensaje(cantR1,r2d2)
+      sino
+        RecibirMensaje(cantR2,c3po)
+    si (cantR1>cantR2)
+      dif:=(cantR1)-(cantR2)
+      Informar(dif)
+    sino
+      dif:=(cantR2)-(cantR1)
+      Informar(dif)
+  fin
+variables
+  r2d2: florero
+  c3po: florero
+  grievous: jefe
+comenzar
+  AsignarArea(r2d2,area1)
+  AsignarArea(c3po,area2)
+  AsignarArea(grievous,area3)
+  Iniciar(r2d2,1,1)
+  Iniciar(c3po,2,11)
+  Iniciar(grievous,2,1)
+fin

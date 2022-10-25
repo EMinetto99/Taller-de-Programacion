@@ -1,0 +1,121 @@
+programa parcial
+procesos
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso procesarEsquinaFlores(ES cantF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cantF:=cantF+1
+  fin
+areas
+  areaT1: AreaP(1,1,6,6)
+  areaT2: AreaP(7,1,12,6)
+  areaT3: AreaP(13,1,18,6)
+  areaDeposito: AreaC(10,10,10,10)
+  areaCoordinador: AreaP(20,1,20,1)
+robots
+  robot trabajador
+  variables
+    avIni, caIni, cantF, quienSoy: numero
+    strobe, winner: boolean
+  comenzar
+    avIni:=PosAv
+    caIni:=PosCa
+    RecibirMensaje(quienSoy,coor)  {Recibo quien soy}
+    cantF:=0
+    derecha
+    RecibirMensaje(strobe,coor)  {Recibo la senial del coordinador para empezar}
+    mientras (strobe)
+      repetir 5
+        procesarEsquinaFlores(cantF)
+        mover
+      procesarEsquinaFlores(cantF)
+      EnviarMensaje(V,coor)
+      RecibirMensaje(strobe,coor)
+      izquierda
+    EnviarMensaje(quienSoy,coor)  {Si termine envio quien soy para determinar}
+    EnviarMensaje(cantF,coor)  {Envio cantidad}
+
+    RecibirMensaje(winner,coor)  {Recibo del coordinador si el trabajador GANO o NO}
+    si ~(winner)  {Recibe mensaje del coordinador, si No gano va a la esquina}
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      mientras HayFlorEnLaBolsa
+        depositarFlor
+      Pos(avIni,caIni)
+      LiberarEsquina(10,10)
+  fin
+  robot coordinador
+  variables
+    cantF, idWinner, quien, cantMax: numero
+    messages, winner: boolean
+  comenzar
+    cantMax:=-9999
+    winner:=V
+    EnviarMensaje(1,t1)  {Envio a los trabajadores QUIENES son}
+    EnviarMensaje(2,t2)
+    EnviarMensaje(3,t3)
+    repetir 4  {Envio mensajes a los Trabajadores}
+      EnviarMensaje(V,t1)  {Envio señal al primero}
+      EnviarMensaje(V,t2)  {Envio señal al segundo}
+      EnviarMensaje(V,t3)  {Envio señal al tercero}
+      repetir 3
+        RecibirMensaje(messages,*)
+    EnviarMensaje(F,t1) {Terminan}
+    EnviarMensaje(F,t2)
+    EnviarMensaje(F,t3)
+    repetir 3  {Determino quien es el robot que envia la cantidad}
+      RecibirMensaje(quien,*)  {Quien es el que envio}
+      si (quien=1)
+        RecibirMensaje(cantF,t1)  {Recibo cantidad del que envio}
+      sino
+        si (quien=2)
+          RecibirMensaje(cantF,t2)
+        sino
+          RecibirMensaje(cantF,t3)
+      si (cantF>cantMax)  {Determino quien es el que tiene mayor cantidad}
+        cantMax:=cantF
+        idWinner:=quien
+    si (idWinner=1)  {Si gano el primero}
+      Informar('El_ganador_es_el_trabajador_',idWinner)  {Informo el ganador}
+      EnviarMensaje(winner,t1)  {Gano el T1 y no hace nada}
+      winner:=F
+      EnviarMensaje(winner,t2)  {Perdieron los demas y les digo que vayan a la esquina}
+      EnviarMensaje(winner,t3)
+    sino
+      si (idWinner=2)  {Si gano el segundo}
+        Informar('El_ganador_es_el_trabajador_',idWinner)
+        EnviarMensaje(winner,t2) {Gano el T2 y no hace nada}
+        winner:=F
+        EnviarMensaje(winner,t1)  {Perdieron los demas y les digo que vayan a la esquina}
+        EnviarMensaje(winner,b3)
+      sino                {Si gano el tercero}
+        Informar('El_ganador_es_el_trabajador_',idWinner)
+        EnviarMensaje(winner,3) {Gano el T3 y no hace nada}
+        winner:=F
+        EnviarMensaje(winner,1)  {Perdieron los demas y les digo que vayan a la esquina}
+        EnviarMensaje(winner,2)
+  fin
+variables
+  t1: trabajador
+  t2: trabajador
+  t3: trabajador
+  coor: coordinador
+comenzar
+  AsignarArea(t1,areaT1)
+  AsignarArea(t2,areaT2)
+  AsignarArea(t3,areaT3)
+  AsignarArea(t1,areaDeposito)
+  AsignarArea(t1,areaDeposito)
+  AsignarArea(t1,areaDeposito)
+  AsignarArea(coor,areaCoordinador)
+  Iniciar(t1,1,1)
+  Iniciar(t2,7,1)
+  Iniciar(t3,13,1)
+  Iniciar(coor,20,1)
+fin

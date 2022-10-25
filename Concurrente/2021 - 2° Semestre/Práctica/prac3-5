@@ -1,0 +1,93 @@
+programa ejer5
+procesos
+  proceso nada
+  variables
+    nada: boolean
+  comenzar
+    nada:=V
+  fin
+areas
+  areaR1: AreaP(4,1,4,100)
+  areaR2: AreaP(6,1,6,100)
+  areaR3: AreaP(8,1,8,100)
+  areaR4: AreaP(10,1,10,100)
+  areaFuente: AreaPC(11,11,11,11)
+  areaCoordinador: AreaP(1,1,1,1)
+robots
+  robot papelero
+  variables
+    cantPasos, avAct, caAct, quienSoy: numero
+    hay: boolean
+  comenzar
+    hay:=V
+    cantPasos:=0
+    RecibirMensaje(quienSoy,grievous)
+    mientras (hay) & (cantPasos<99)
+      avAct:=PosAv
+      caAct:=PosCa
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      si HayPapelEnLaEsquina
+        tomarPapel
+      sino
+        hay:=F
+      Pos(avAct,caAct)
+      LiberarEsquina(11,11)
+      si (hay)
+        mover
+        cantPasos:=(cantPasos)+1
+    EnviarMensaje(quienSoy,grievous) {En primero que llega, es el ganador directo}
+    EnviarMensaje(cantPasos,grievous)  {Caso contrario se determina por la cantidad de pasos obtenidos}
+  fin
+  robot jefe
+  variables
+    quien, idWinner, max, cant: numero
+  comenzar
+    max:=-1
+    EnviarMensaje(1,r2d2)
+    EnviarMensaje(2,c3po)
+    EnviarMensaje(3,bb8)
+    EnviarMensaje(4,gonk)
+    repetir 4
+      RecibirMensaje(quien,*)
+      si (quien=1)
+        RecibirMensaje(cant,r2d2)
+      sino
+        si (quien=2)
+          RecibirMensaje(cant,c3po)
+        sino
+          si (quien=3)
+            RecibirMensaje(cant,bb8)
+          sino
+            si (quien=4)
+              RecibirMensaje(cant,gonk)
+      si (cant>max)
+        max:=cant
+        idWinner:=quien
+    si (cant=99)
+      Informar('ROBOT_QUE_TERMINÓ_LA_CARRERA',idWinner)
+    sino  
+      Informar('ROBOT_GANADOR_QUE_LLEGÓ_MAS_LEJOS',idWinner)
+  fin
+variables
+  r2d2: papelero
+  c3po: papelero
+  bb8: papelero
+  gonk: papelero
+  grievous: jefe
+comenzar
+  AsignarArea(r2d2,areaR1)
+  AsignarArea(c3po,areaR2)
+  AsignarArea(bb8,areaR3)
+  AsignarArea(gonk,areaR4)
+  AsignarArea(grievous,areaCoordinador)
+  AsignarArea(r2d2,areaFuente)
+  AsignarArea(c3po,areaFuente)
+  AsignarArea(bb8,areaFuente)
+  AsignarArea(gonk,areaFuente)
+  Iniciar(r2d2,4,1)
+  Iniciar(c3po,6,1)
+  Iniciar(bb8,8,1)
+  Iniciar(gonk,10,1)
+  Iniciar(grievous,1,1)
+fin

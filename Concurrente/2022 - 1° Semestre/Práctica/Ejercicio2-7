@@ -1,0 +1,82 @@
+programa ejercicio27
+procesos
+  proceso procesarEsquinaF(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF:=cF+1
+  fin
+areas
+  areaR1: AreaP(2,2,7,7)
+  areaR2: AreaP(8,2,13,7)
+  areaR3: AreaP(14,2,19,7)
+  areaFisco: AreaP(1,1,1,1)
+robots
+  robot jugador
+  variables
+    cantF, avIni, caIni, avMin, avMax, caMin, caMax, rndAv, rndCa: numero
+  comenzar
+    avIni:=PosAv
+    caIni:=PosCa
+    RecibirMensaje(avMin,fisco) {variable, inferior - superior}
+    RecibirMensaje(avMax,fisco)
+    RecibirMensaje(caMin,fisco)
+    RecibirMensaje(caMax,fisco)
+    repetir 3
+      Random(rndAv,avMin,avMax)
+      Random(rndCa,caMin,caMax)
+      Pos(rndAv,rndCa)
+      procesarEsquinaF(cantF)
+      Pos(avIni,caIni)
+    EnviarMensaje(cantF,fisco)
+  fin
+  robot fiscalizador
+  variables
+    avMin, caMin, avMax, caMax, aux, cantF: numero
+  comenzar
+    cantF:=0
+    avMin:=2
+    caMin:=2
+    avMax:=7
+    caMax:=7
+    EnviarMensaje(avMin,Robot1)
+    EnviarMensaje(avMax,Robot1)
+    EnviarMensaje(caMin,Robot1)
+    EnviarMensaje(caMax,Robot1)
+    avMin:=8
+    caMin:=2
+    avMax:=13
+    caMax:=7
+    EnviarMensaje(avMin,Robot2)
+    EnviarMensaje(avMax,Robot2)
+    EnviarMensaje(caMin,Robot2)
+    EnviarMensaje(caMax,Robot2)
+    avMin:=14
+    caMin:=2
+    avMax:=19
+    caMax:=7
+    EnviarMensaje(avMin,Robot3)
+    EnviarMensaje(avMax,Robot3)
+    EnviarMensaje(caMin,Robot3)
+    EnviarMensaje(caMax,Robot3)
+    repetir 3
+      RecibirMensaje(*)
+      cantF:=cantF+aux;
+    Informar('Cantidad_total_de_flores_',cantF)
+  fin
+variables
+  Robot1: jugador
+  Robot2: jugador
+  Robot3: jugador
+  fisco: fiscalizador
+comenzar
+  AsignarArea(Robot1,areaR1)
+  AsignarArea(Robot2,areaR2)
+  AsignarArea(Robot3,areaR3)
+  AsignarArea(fisco,areaFisco)
+  Iniciar(Robot1,2,2)
+  Iniciar(Robot2,8,2)
+  Iniciar(Robot3,14,2)
+  Iniciar(fisco,1,1)
+fin

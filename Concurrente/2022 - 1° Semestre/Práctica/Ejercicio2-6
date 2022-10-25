@@ -1,0 +1,82 @@
+programa ejercicio26
+procesos
+  proceso tomarFlorYContar(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF:=cF+1
+  fin
+  proceso hacerAlto(E alto: numero; ES cantF: numero)
+  comenzar
+    repetir (alto)
+      tomarFlorYContar(cantF)
+      mover
+  fin
+  proceso hacerAncho(E ancho: numero; ES cantF: numero)
+  comenzar
+    repetir (ancho)
+      tomarFlorYContar(cantF)
+      mover
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots 
+  robot florero
+  variables
+    cantF, alto, ancho, quienSoy: numero
+  comenzar
+    RecibirMensaje(quienSoy,Jefe)
+    RecibirMensaje(ancho,Jefe)
+    Random(alto,1,100)
+    cantF:=0
+    repetir 2
+      hacerAlto(alto,cantF)
+      derecha
+      hacerAncho(ancho,cantF)
+      derecha
+    EnviarMensaje(quienSoy,Jefe)
+    EnviarMensaje(cantF,Jefe)
+  fin
+  robot jefe
+  variables
+    floresR1, floresR2, ancho, quien: numero
+  comenzar
+    quien:=1
+    ancho:=3 {3 de ancho}
+    EnviarMensaje(quien,Robot1)
+    EnviarMensaje(ancho,Robot1)
+    quien:=2
+    ancho:=2 {2 de ancho}
+    EnviarMensaje(quien,Robot2)
+    EnviarMensaje(ancho,Robot2)
+    RecibirMensaje(quien,*)
+    si (quien=1)
+      RecibirMensaje(floresR1,Robot1)
+      RecibirMensaje(quien,Robot2)
+      RecibirMensaje(floresR2,Robot2)
+    sino
+      RecibirMensaje(quien,Robot2)
+      RecibirMensaje(floresR2,Robot2)
+      RecibirMensaje(floresR1,Robot1)
+    si (floresR1=floresR2)
+      quien:=0 {Cantidad empatada}
+    sino
+      si (floresR1>floresR2)
+        quien:=1
+      sino
+        quien:=2
+    Informar('El_que_junto_mas_flores_fue_el_Robot_',quien)
+  fin   
+variables 
+  Robot1: florero
+  Robot2: florero
+  Jefe: jefe
+comenzar
+  AsignarArea(Robot1,ciudad)
+  AsignarArea(Robot2,ciudad)
+  AsignarArea(Jefe,ciudad)
+  Iniciar(Robot1,2,2)
+  Iniciar(Robot2,6,2)
+  Iniciar(Jefe,1,1)
+fin

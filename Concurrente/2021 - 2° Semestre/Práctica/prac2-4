@@ -1,0 +1,178 @@
+programa ejer2
+procesos
+  proceso procesarEsquinaF(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF:=cF+1
+  fin
+  proceso procesarEsquinaP(ES cP: numero)
+  comenzar
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+        cP:=cP+1
+  fin
+  proceso procesarEsquina(ES cT: numero)
+  variables
+    cantF, cantP: numero
+  comenzar
+    cantP:=0
+    cantF:=0
+    procesarEsquinaF(cantF)
+    procesarEsquinaP(cantP)
+    cT:=(cantF)+(cantP)
+  fin
+areas
+  areaCentral: AreaPC(25,25,75,75)
+  areaFisco: AreaP(1,1,1,1)
+  areaR1: AreaP(25,1,25,1)
+  areaR2: AreaP(30,1,30,1)
+  areaR3: AreaP(35,1,35,1)
+  areaR4: AreaP(40,1,40,1)
+robots
+  robot recolector1
+  variables
+    cantTotal, avIni, caIni, posAv, posCa: numero
+    strobe: boolean
+  comenzar
+    avIni:=1
+    caIni:=25
+    RecibirMensaje(strobe,grievous)
+    si (strobe=F)
+      Random(posAv,25,75)
+      Random(posCa,25,75)
+      Pos(posAv,posCa)
+      procesarEsquina(cantTotal)
+      EnviarMensaje(1,grievous)
+      EnviarMensaje(cantTotal,grievous)
+    si (strobe)
+      Pos(50,50)
+  fin
+  robot recolector2
+  variables
+    cantTotal, avIni, caIni, posAv, posCa: numero
+    strobe: boolean
+  comenzar
+    avIni:=1
+    caIni:=30
+    RecibirMensaje(strobe,grievous)
+    si (strobe=F)
+      Random(posAv,25,75)
+      Random(posCa,25,75)
+      Pos(posAv,posCa)
+      procesarEsquina(cantTotal)
+      EnviarMensaje(2,grievous)
+      EnviarMensaje(cantTotal,grievous)
+    si (strobe)
+      Pos(50,50)
+  fin
+  robot recolector3
+  variables
+    cantTotal, avIni, caIni, posAv, posCa: numero
+    strobe: boolean
+  comenzar
+    avIni:=1
+    caIni:=35
+    RecibirMensaje(strobe,grievous)
+    si (strobe=F)
+      Random(posAv,25,75)
+      Random(posCa,25,75)
+      Pos(posAv,posCa)
+      procesarEsquina(cantTotal)
+      EnviarMensaje(3,grievous)
+      EnviarMensaje(cantTotal,grievous)
+    si (strobe)
+      Pos(50,50)
+  fin
+  robot recolector4
+  variables
+    cantTotal, avIni, caIni, posAv, posCa: numero
+    strobe: boolean
+  comenzar
+    avIni:=1
+    caIni:=40
+    RecibirMensaje(strobe,grievous)
+    si (strobe=F)
+      Random(posAv,25,75)
+      Random(posCa,25,75)
+      Pos(posAv,posCa)
+      procesarEsquina(cantTotal)
+      EnviarMensaje(4,grievous)
+      EnviarMensaje(cantTotal,grievous)
+    si (strobe)
+      Pos(50,50)
+  fin
+  robot fiscalizador
+  variables
+    cant, act, max, cantR1, cantR2, cantR3, cantR4, idMax, quien: numero
+  comenzar
+    cantR1:=0
+    cantR2:=0
+    cantR3:=0
+    cantR4:=0
+    max:=-1
+    repetir 10
+      Random(quien,1,4)
+      si (quien=1)
+        EnviarMensaje(F,r2d2)
+        RecibirMensaje(cant,r2d2)
+        cantR1:=(cantR1)+cant
+        act:=cantR1
+      sino
+        si (quien=2)
+          EnviarMensaje(F,c3po)
+          RecibirMensaje(cant,c3po)
+          cantR2:=(cantR2)+cant
+          act:=cantR2
+        sino 
+          si (quien=3)
+            EnviarMensaje(F,bb8)
+            RecibirMensaje(cant,bb8)
+            cantR3:=(cantR3)+cant
+            act:=cantR3
+          sino
+            si (quien=4)
+              EnviarMensaje(F,gonk)
+              RecibirMensaje(cant,gonk)
+              cantR4:=(cantR4)+cant
+              act:=cantR4
+      si (act>max)
+        max:=act
+        idMax:=quien
+    si (idMax=1)
+      EnviarMensaje(V,r2d2)
+    sino
+      si (idMax=2)
+        EnviarMensaje(V,c3po)
+      sino
+        si (idMax=3)
+          EnviarMensaje(V,bb8)
+        sino
+          si (idMax=4)
+            EnviarMensaje(V,gonk)
+    Informar('ROBOT_ganador',idMax)
+  fin
+variables
+  r2d2: recolector1
+  c3po: recolector2
+  bb8: recolector3
+  gonk: recolector4
+  grievous: fiscalizador
+comenzar
+  AsignarArea(r2d2,areaR1)
+  AsignarArea(c3po,areaR2)
+  AsignarArea(bb8,areaR3)
+  AsignarArea(gonk,areaR4)
+  AsignarArea(r2d2,areaCentral)
+  AsignarArea(c3po,areaCentral)
+  AsignarArea(bb8,areaCentral)
+  AsignarArea(gonk,areaCentral)
+  AsignarArea(grievous,areaFisco)
+  Iniciar(r2d2,25,1)
+  Iniciar(c3po,30,1)
+  Iniciar(bb8,35,1)
+  Iniciar(gonk,40,1)
+  Iniciar(grievous,1,1)
+fin

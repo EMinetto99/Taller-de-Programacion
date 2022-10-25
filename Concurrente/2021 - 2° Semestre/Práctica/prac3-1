@@ -1,0 +1,91 @@
+programa ejer1
+procesos
+  proceso procesarEsquinaF(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF:=cF+1
+  fin
+  proceso procesarEsquinaP(ES cP: numero)
+  comenzar
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+        cP:=cP+1
+  fin
+areas
+  areaFlor: AreaPC(1,1,5,10)
+  areaPapel: AreaPC(6,1,10,9)
+  areaR1: AreaP(6,10,6,10)
+  areaR2: AreaP(7,10,7,10)
+  areaR3: AreaP(8,10,8,10)
+  areaR4: AreaP(9,10,9,10)
+  areaDeposito: AreaPC(10,10,10,10)
+robots
+  robot florero
+  variables
+    cantF, avIni, caIni, posAv, posCa: numero
+  comenzar
+    cantF:=0
+    avIni:=PosAv
+    caIni:=PosCa
+    repetir 10
+      Random(posAv,1,5)
+      Random(posCa,1,10)
+      BloquearEsquina(posAv,posCa)
+      Pos(posAv,posCa)
+      procesarEsquinaF(cantF)
+      Pos(avIni,caIni)
+      LiberarEsquina(posAv,posCa)
+    repetir (cantF)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarFlor
+      Pos(avIni,caIni)
+      LiberarEsquina(10,10)
+  fin
+  robot papelero
+  variables
+    cantP, avIni, caIni, posAv, posCa: numero
+  comenzar
+    avIni:=PosAv
+    caIni:=PosCa
+    repetir 6
+      Random(posAv,6,10)
+      Random(posCa,1,9)
+      BloquearEsquina(posAv,posCa)
+      Pos(posAv,posCa)
+      procesarEsquinaP(cantP)
+      Pos(avIni,caIni)
+      LiberarEsquina(posAv,posCa)
+    repetir (cantP)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarPapel
+      Pos(avIni,caIni)
+      LiberarEsquina(10,10)
+  fin
+variables
+  r2d2: florero
+  c3po: florero
+  bb8: papelero
+  gonk: papelero
+comenzar
+  AsignarArea(r2d2,areaFlor)
+  AsignarArea(c3po,areaFlor)
+  AsignarArea(bb8,areaPapel)
+  AsignarArea(gonk,areaPapel)
+  AsignarArea(r2d2,areaDeposito)
+  AsignarArea(c3po,areaDeposito)
+  AsignarArea(bb8,areaDeposito)
+  AsignarArea(gonk,areaDeposito)
+  AsignarArea(r2d2,areaR1)
+  AsignarArea(c3po,areaR2)
+  AsignarArea(bb8,areaR3)
+  AsignarArea(gonk,areaR4)
+  Iniciar(r2d2,6,10)
+  Iniciar(c3po,7,10)
+  Iniciar(bb8,8,10)
+  Iniciar(gonk,9,10)
+fin

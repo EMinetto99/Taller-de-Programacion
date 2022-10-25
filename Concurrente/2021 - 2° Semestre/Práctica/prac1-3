@@ -1,0 +1,93 @@
+programa ejer3
+procesos
+  proceso izquierda
+  comenzar
+    repetir 3
+      derecha
+  fin
+  proceso lado(E tamanio: numero; ES cantF: numero; ES cantP: numero)
+  variables
+    auxP: numero
+    auxF: numero
+    rep: numero
+  comenzar
+    auxP:=0
+    auxF:=0
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cantF:=cantF+1
+        auxF:=auxF+1
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+        cantP:=cantP+1
+        auxP:=auxP+1
+    repetir auxF
+      depositarFlor
+    repetir auxP
+      depositarPapel
+    mover
+    rep:=(tamanio)-1
+    {si rep>1 otra opcion}
+    repetir (rep)
+      si HayFlorEnLaEsquina
+        mientras HayFlorEnLaEsquina
+          tomarFlor
+          cantF:=cantF+1
+      si HayPapelEnLaEsquina
+        mientras HayPapelEnLaEsquina
+          tomarPapel
+          cantP:=cantP+1
+      mover
+  fin
+  proceso escalon(E tam: numero; ES supero: numero)
+  variables
+    cantF: numero
+    cantP: numero
+    diferencia: numero
+  comenzar
+    cantF:=0
+    cantP:=0
+    lado(tam,cantF,cantP)
+    derecha
+    lado(tam,cantF,cantP)
+    izquierda
+    diferencia:=(cantP)-(cantF)
+    si (diferencia=1)
+      supero:=(supero)+1
+  fin
+  proceso escalera(E esc: numero)
+  variables
+    medida: numero
+    supero: numero
+  comenzar
+    supero:=0
+    medida:=1
+    repetir (esc)
+      escalon(medida,supero)
+      medida:=(medida)+1
+    Informar(supero)
+  fin
+areas
+  area: AreaC(1,1,100,100)
+robots
+  robot robot1
+  variables
+    escalones: numero
+  comenzar
+    escalones:=4
+    escalera(escalones)
+  fin
+variables
+  r2d2: robot1
+  c3po: robot1
+  bb8: robot1
+comenzar
+  AsignarArea(r2d2,area)
+  AsignarArea(c3po,area)
+  AsignarArea(bb8,area)
+  Iniciar(r2d2,12,14)
+  Iniciar(c3po,17,10)
+  Iniciar(bb8,22,6)
+fin

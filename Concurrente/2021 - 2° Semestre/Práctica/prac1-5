@@ -1,0 +1,91 @@
+programa ejer5
+procesos
+  proceso procesarEsquinaF(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF:=cF+1
+  fin
+  proceso procesarEsquinaP(ES cP: numero)
+  comenzar
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+        cP:=cP+1
+  fin
+  proceso limpiarPapeles
+  variables
+    cantP: numero
+  comenzar
+    cantP:=0
+    repetir 20
+      mover
+      procesarEsquinaP(cantP)
+    Pos(PosAv,(PosCa)-20)
+    repetir cantP
+      depositarPapel
+  fin
+  proceso limpiarFlores
+  variables
+    cantF: numero
+  comenzar
+    cantF:=0
+    repetir 20
+      procesarEsquinaF(cantF)
+      mover
+    repetir cantF
+      depositarFlor
+  fin
+  proceso dobleLimpiezaPapeles
+  comenzar
+    limpiarPapeles
+    Pos((PosAv)+5,PosCa)
+    limpiarPapeles
+  fin
+  proceso dobleLimpiezaFlores
+  comenzar
+    limpiarFlores
+    Pos((PosAv)-20,(PosCa)+5)
+    limpiarFlores
+  fin
+areas
+  area: AreaC(1,1,100,100)
+robots
+  robot robot1
+  comenzar
+    Pos(1,80)
+    derecha
+    dobleLimpiezaFlores
+  fin
+  robot robot3
+  comenzar
+    Pos(80,15)
+    derecha
+    dobleLimpiezaFlores
+  fin
+  robot robot2
+  comenzar
+    Pos(10,1)
+    dobleLimpiezaPapeles
+  fin
+  robot robot4
+  comenzar
+    Pos(75,80)
+    dobleLimpiezaPapeles
+  fin
+variables
+  r2d2: robot1
+  c3po: robot2
+  bb8: robot3
+  droideka: robot4
+comenzar
+  AsignarArea(r2d2,area)
+  AsignarArea(c3po,area)
+  AsignarArea(bb8,area)
+  AsignarArea(droideka,area)
+  Iniciar(r2d2,1,1)
+  Iniciar(c3po,2,1)
+  Iniciar(bb8,3,1)
+  Iniciar(droideka,4,1)
+fin

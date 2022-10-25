@@ -1,0 +1,124 @@
+programa EspinilloLautaro
+procesos
+  proceso  juntarFlores(ES f:numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      tomarFlor
+      f := f + 1
+  fin
+  proceso  calcularMax(ES fMax:numero; ES idMax:numero; E flores:numero; E id:numero)
+  comenzar
+    si (flores > fMax)
+      fMax := flores
+      idMax := id
+  fin
+  proceso  lado(ES f:numero)
+  variables
+    empezar:boolean
+  comenzar
+    repetir 5
+      mientras HayFlorEnLaEsquina
+        juntarFlores(f)
+      mover
+    derecha
+    EnviarMensaje(V,jefe)
+    RecibirMensaje(empezar,jefe)
+  fin
+  proceso  depositarPerdedor
+  variables
+    miAv,miCa:numero
+  comenzar
+    miAv := PosAv
+    miCa := PosCa
+    mientras HayFlorEnLaBolsa
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarFlor
+      Pos(miAv,miCa)
+      LiberarEsquina(10,10)
+  fin
+areas
+  {Areas Individuales}
+  area_robot_1: AreaP(1,1,6,6)
+  area_robot_2: AreaP(7,1,12,6)
+  area_robot_3: AreaP(13,1,18,6)
+  area_jefe: AreaP(20,1,20,1)
+  {Area deposito}
+  area_deposito: AreaPC(10,10,10,10)
+robots
+  robot trabajador
+  variables
+    f:numero
+    id:numero
+    empezar:boolean
+    ganador:numero
+    miAv,miCa:numero
+  comenzar
+    f := 0
+    RecibirMensaje(id,jefe)
+    repetir 4
+      lado(f)
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(f,jefe)
+    RecibirMensaje(ganador,jefe)
+    si ganador <> id
+      depositarPerdedor
+      f := 0 {Reinicio el contador de flores en 0}
+  fin
+
+  robot tipoJefe
+  variables
+    terminoLado:boolean
+    idMax,fMax:numero
+    id,flores:numero
+  comenzar
+    fMax := 0
+    EnviarMensaje(1,robot_1)
+    EnviarMensaje(2,robot_2)
+    EnviarMensaje(3,robot_3)
+    {Completar cuadrado}
+    repetir 4
+      repetir 3
+        RecibirMensaje(terminoLado,*)
+      EnviarMensaje(V,robot_1)
+      EnviarMensaje(V,robot_2)
+      EnviarMensaje(V,robot_3)
+    {Ganador}
+    repetir 3
+      RecibirMensaje(id,*)
+      si id = 1
+        RecibirMensaje(flores,robot_1)
+      sino
+        si id = 2
+          RecibirMensaje(flores,robot_2)
+        sino
+          si id = 3
+            RecibirMensaje(flores,robot_3)
+      calcularMax(fMax,idMax,flores,id)
+    Informar('ganador',idMax)
+    {Mandar a depositar}
+    EnviarMensaje(idMax,robot_1)
+    EnviarMensaje(idMax,robot_2)
+    EnviarMensaje(idMax,robot_3)
+  fin
+variables
+  robot_1: trabajador
+  robot_2: trabajador
+  robot_3: trabajador
+  jefe: tipoJefe
+comenzar
+  {Areas Individuales}
+  AsignarArea(robot_1,area_robot_1)
+  AsignarArea(robot_2,area_robot_2)
+  AsignarArea(robot_3,area_robot_3)
+  AsignarArea(jefe,area_jefe)
+  {Area Deposito}
+  AsignarArea(robot_1,area_deposito)
+  AsignarArea(robot_2,area_deposito)
+  AsignarArea(robot_3,area_deposito)
+  {Iniciar}
+  Iniciar(robot_1,1,1)
+  Iniciar(robot_2,7,1)
+  Iniciar(robot_3,13,1)
+  Iniciar(jefe,20,1)
+fin

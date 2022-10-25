@@ -1,0 +1,43 @@
+programa nombre
+procesos
+  proceso procesarEsquina(ES f: numero; ES sF: numero)
+  comenzar
+    si ~(HayFlorEnLaEsquina)
+      sF:=sF+1
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      f:=f+1
+  fin
+  proceso recorrerAvenida
+  variables
+    cantSinFlores: numero
+    cantFlores: numero
+  comenzar
+    cantSinFlores:=0
+    cantFlores:=0
+    repetir 99
+      procesarEsquina(cantFlores,cantSinFlores)
+      mover
+    procesarEsquina(cantFlores,cantSinFlores)
+    repetir cantFlores
+      depositarFlor
+    Informar(cantFlores)
+    Informar(cantSinFlores)
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot robot1
+  comenzar
+    recorrerAvenida
+    Pos(3,1)
+    recorrerAvenida
+    Pos(5,1)
+    recorrerAvenida
+  fin
+variables
+  florero: robot1
+comenzar
+  AsignarArea(florero,ciudad)
+  Iniciar(florero,1,1)
+fin

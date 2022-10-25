@@ -1,0 +1,174 @@
+programa ejercicio1adicional
+procesos
+  proceso procesarEsquinaFlores
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+  fin
+areas
+  areaR1: AreaP(2,1,2,1)
+  areaR2: AreaP(14,1,14,1)
+  areaD1: AreaP(3,1,3,1)
+  areaD2: AreaP(15,1,15,1)
+  areaEquipo1: AreaPC(2,2,12,12)
+  areaEquipo2: AreaPC(14,2,24,12)
+  areaFuente: AreaPC(13,13,13,13)
+  areaJefe: AreaP(1,1,1,1)
+robots
+  robot recolectorFlor1
+  variables
+    caIni, avIni, posCaINI, posCaFIN, posAvINI, posAvFIN, rndCa,rndAv: numero
+    strobe: boolean
+  comenzar
+    avIni:=(PosAv)
+    caIni:=(PosCa)
+    RecibirMensaje(posCaINI,jefe) {}
+    RecibirMensaje(posCaFIN,jefe)
+    RecibirMensaje(posAvINI,jefe)
+    RecibirMensaje(posAvFIN,jefe)
+    repetir 3
+      Random(rndCa,posCaINI,posCaFIN)
+      Random(rndAv,posAvINI,posAvFIN)
+      BloquearEsquina(rndAv,rndCa)
+      Pos(rndAv,rndCa)
+      procesarEsquinaFlores
+      Pos(avIni,caIni)
+      LiberarEsquina(rndAv,rndCa)
+    EnviarMensaje(V,RDepo1)
+    RecibirMensaje(strobe,RDepo1)
+    EnviarMensaje(1,jefe)
+  fin
+  robot depositadorPapel1
+  variables
+    caIni, avIni, posCaINI, posCaFIN, posAvINI, posAvFIN, rndCa,rndAv: numero
+    strobe: boolean
+  comenzar
+    avIni:=(PosAv)
+    caIni:=(PosCa)
+    RecibirMensaje(posCaINI,jefe) {}
+    RecibirMensaje(posCaFIN,jefe)
+    RecibirMensaje(posAvINI,jefe)
+    RecibirMensaje(posAvFIN,jefe)
+    repetir 5
+      BloquearEsquina(13,13)
+      Pos(13,13)
+      si HayPapelEnLaEsquina
+        tomarPapel
+      Random(rndCa,posCaINI,posCaFIN)
+      Random(rndAv,posAvINI,posAvFIN)
+      BloquearEsquina(rndAv,rndCa)
+      Pos(rndAv,rndCa)
+      LiberarEsquina(13,13)
+      si HayPapelEnLaBolsa
+        depositarPapel
+      Pos(avIni,caIni)
+      LiberarEsquina(rndAv,rndCa)
+    EnviarMensaje(V,RReco1)
+    RecibirMensaje(strobe,RReco1)
+    EnviarMensaje(1,jefe)
+  fin
+  robot recolectorFlor2
+  variables
+    caIni, avIni, posCaINI, posCaFIN, posAvINI, posAvFIN, rndCa,rndAv: numero
+    strobe: boolean
+  comenzar
+    avIni:=(PosAv)
+    caIni:=(PosCa)
+    RecibirMensaje(posCaINI,jefe) {}
+    RecibirMensaje(posCaFIN,jefe)
+    RecibirMensaje(posAvINI,jefe)
+    RecibirMensaje(posAvFIN,jefe)
+    repetir 3
+      Random(rndCa,posCaINI,posCaFIN)
+      Random(rndAv,posAvINI,posAvFIN)
+      BloquearEsquina(rndAv,rndCa)
+      Pos(rndAv,rndCa)
+      procesarEsquinaFlores
+      Pos(avIni,caIni)
+      LiberarEsquina(rndAv,rndCa)
+    EnviarMensaje(V,RDepo2)
+    RecibirMensaje(strobe,RDepo2)
+    EnviarMensaje(2,jefe)
+  fin
+  robot depositadorPapel2
+  variables
+    caIni, avIni, posCaINI, posCaFIN, posAvINI, posAvFIN, rndCa,rndAv: numero
+    strobe: boolean
+  comenzar
+    avIni:=(PosAv)
+    caIni:=(PosCa)
+    RecibirMensaje(posCaINI,jefe) {}
+    RecibirMensaje(posCaFIN,jefe)
+    RecibirMensaje(posAvINI,jefe)
+    RecibirMensaje(posAvFIN,jefe)
+    repetir 5
+      BloquearEsquina(13,13)
+      Pos(13,13)
+      si HayPapelEnLaEsquina
+        tomarPapel
+      Random(rndCa,posCaINI,posCaFIN)
+      Random(rndAv,posAvINI,posAvFIN)
+      BloquearEsquina(rndAv,rndCa)
+      Pos(rndAv,rndCa)
+      LiberarEsquina(13,13)
+      si HayPapelEnLaBolsa
+        depositarPapel
+      Pos(avIni,caIni)
+      LiberarEsquina(rndAv,rndCa)
+    EnviarMensaje(V,RReco2)
+    RecibirMensaje(strobe,RReco2)
+    EnviarMensaje(2,jefe)
+  fin
+  robot jefe
+  variables
+    idWinner, trash: numero
+  comenzar
+    EnviarMensaje(2,RReco1) {Calle Inicio}
+    EnviarMensaje(12,RReco1) {Calle Fin}
+    EnviarMensaje(2,RReco1)  {Avenida Inicio}
+    EnviarMensaje(12,RReco1)  {Avenida Fin}
+    
+    EnviarMensaje(2,RDepo1)
+    EnviarMensaje(12,RDepo1)
+    EnviarMensaje(2,RDepo1)
+    EnviarMensaje(12,RDepo1)
+    
+    EnviarMensaje(2,RReco2)
+    EnviarMensaje(12,RReco2)
+    EnviarMensaje(14,RReco2)
+    EnviarMensaje(24,RReco2)
+    
+    EnviarMensaje(2,RDepo2)
+    EnviarMensaje(12,RDepo2)
+    EnviarMensaje(14,RDepo2)
+    EnviarMensaje(24,RDepo2)
+    RecibirMensaje(idWinner,*)
+    repetir 3
+      RecibirMensaje(trash,*)
+    Informar('El_equipo_ganador_es_el_NRO_',idWinner)
+  fin
+variables
+  RReco1: recolectorFlor1
+  RDepo1: depositadorPapel1
+  RReco2: recolectorFlor2
+  RDepo2: depositadorPapel2
+  jefe: jefe
+comenzar
+  AsignarArea(RReco1,areaR1)
+  AsignarArea(RDepo1,areaD1)
+  AsignarArea(RReco2,areaR2)
+  AsignarArea(RDepo2,areaD2)
+  AsignarArea(RReco1,areaEquipo1)
+  AsignarArea(RDepo1,areaEquipo1)
+  AsignarArea(RReco2,areaEquipo2)
+  AsignarArea(RDepo2,areaEquipo2)
+  AsignarArea(RDepo1,areaFuente)
+  AsignarArea(RDepo2,areaFuente)
+  AsignarArea(jefe,areaJefe)
+  Iniciar(RReco1,2,1)
+  Iniciar(RDepo1,3,1)
+  Iniciar(RReco2,14,1)
+  Iniciar(RDepo2,15,1)
+  Iniciar(jefe,1,1)
+fin

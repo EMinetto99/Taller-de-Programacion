@@ -1,0 +1,154 @@
+programa ejerciosAdicional2
+procesos
+  proceso procesarEsquinaFlores
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+  fin
+  proceso procesarEsquinaPapeles
+  comenzar
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+  fin
+areas
+  areaVertical1: AreaP(5,6,5,20)
+  areaHorizontal1: AreaP(6,5,15,5)
+  areaVertical2: AreaP(25,6,25,20)
+  areaHorizontal2: AreaP(26,5,35,5)
+  interseccion1: AreaPC(5,5,5,5)
+  interseccion2: AreaPC(25,5,25,5)
+  areaR1_E1: AreaP(2,1,2,1)
+  areaR2_E1: AreaP(3,1,3,1)
+  areaR1_E2: AreaP(4,1,4,1)
+  areaR2_E2: AreaP(5,1,5,1)
+  areaFisco: AreaP(1,1,1,1)
+robots
+  robot verticalFlores1
+  variables
+    strobe: boolean
+    posCa, posAv: numero
+  comenzar
+    RecibirMensaje(posAv,fisco)
+    RecibirMensaje(posCa,fisco)
+    BloquearEsquina(posAv,posCa)
+    Pos(posAv,posCa)
+    procesarEsquinaFlores
+    mover
+    LiberarEsquina(posAv,posCa)
+    repetir 14
+      procesarEsquinaFlores
+      mover
+    procesarEsquinaFlores
+    EnviarMensaje(V,R2_E1)
+    RecibirMensaje(strobe,R2_E1)
+    EnviarMensaje(1,fisco)
+  fin
+  robot verticalFlores2
+  variables
+    strobe: boolean
+    posCa, posAv: numero
+  comenzar
+    RecibirMensaje(posAv,fisco)
+    RecibirMensaje(posCa,fisco)
+    BloquearEsquina(posAv,posCa)
+    Pos(posAv,posCa)
+    procesarEsquinaFlores
+    mover
+    LiberarEsquina(posAv,posCa)
+    repetir 14
+      procesarEsquinaFlores
+      mover
+    procesarEsquinaFlores
+    EnviarMensaje(V,R2_E2)
+    RecibirMensaje(strobe,R2_E2)
+    EnviarMensaje(2,fisco)
+  fin
+  robot horizontalPapeles1
+  variables
+    strobe: numero
+    posCa, posAv: numero
+  comenzar
+    RecibirMensaje(posAv,fisco)
+    RecibirMensaje(posCa,fisco)
+    BloquearEsquina(posAv,posCa)
+    Pos(posAv,posCa)
+    derecha
+    procesarEsquinaPapeles
+    mover
+    LiberarEsquina(posAv,posCa)
+    repetir 9
+      procesarEsquinaPapeles
+      mover
+    procesarEsquinaPapeles
+    EnviarMensaje(V,R1_E1)
+    RecibirMensaje(strobe,R1_E1)
+    EnviarMensaje(1,fisco)
+  fin
+  robot horizontalPapeles2
+  variables
+    strobe: boolean
+    posCa, posAv: numero
+  comenzar
+    RecibirMensaje(posAv,fisco)
+    RecibirMensaje(posCa,fisco)
+    BloquearEsquina(posAv,posCa)
+    Pos(posAv,posCa)
+    derecha
+    procesarEsquinaPapeles
+    mover
+    LiberarEsquina(posAv,posCa)
+    repetir 9
+      procesarEsquinaPapeles
+      mover
+    procesarEsquinaPapeles 
+    EnviarMensaje(V,R1_E2)
+    RecibirMensaje(strobe,R1_E2)
+    EnviarMensaje(2,fisco)
+  fin
+  robot fiscalizador
+  variables
+    idWinner, messages: numero
+  comenzar
+    EnviarMensaje(5,R1_E1) {Calle Inicio - Robot 1 Equipo 1}
+    EnviarMensaje(5,R1_E1)  {Avenida Inicio - Robot 1 Equipo 1}
+    EnviarMensaje(5,R2_E1)  {Calle Inicio - Robot 2 Equipo 1}
+    EnviarMensaje(5,R2_E1)  {Avenida Inicio - Robot 2 Equipo 1}
+
+    EnviarMensaje(25,R1_E2)  {Avenida - Robot 1 Equipo 2}
+    EnviarMensaje(5,R1_E2)  {Calle - Robot 1 Equipo 2}
+    EnviarMensaje(25,R2_E2)  {Avenida Inicio - Robot 2 Equipo 2}
+    EnviarMensaje(5,R2_E2)  {Calle Inicio - Robot 2 Equipo 2}
+
+    RecibirMensaje(idWinner,*)
+    repetir 3
+      RecibirMensaje(messages,*)
+    Informar('El_equipo_ganador_es_el_NRO_',idWinner)
+  fin
+variables
+  R1_E1: verticalFlores1
+  R2_E1: horizontalPapeles1
+  R1_E2: verticalFlores2
+  R2_E2: horizontalPapeles2
+  fisco: fiscalizador
+comenzar
+  AsignarArea(R1_E1,areaR1_E1)
+  AsignarArea(R2_E1,areaR2_E1)
+  AsignarArea(R1_E2,areaR1_E2)
+  AsignarArea(R2_E2,areaR2_E2)
+  AsignarArea(R1_E1,areaVertical1)
+  AsignarArea(R2_E1,areaHorizontal1)
+  AsignarArea(R1_E2,areaVertical2)
+  AsignarArea(R2_E2,areaHorizontal2)
+  AsignarArea(R1_E1,interseccion1)
+  AsignarArea(R2_E1,interseccion1)
+  AsignarArea(R1_E2,interseccion2)
+  AsignarArea(R2_E2,interseccion2)
+  AsignarArea(fisco,areaFisco)
+  Iniciar(R1_E1,2,1)
+  Iniciar(R2_E1,3,1)
+  Iniciar(R1_E2,4,1)
+  Iniciar(R2_E2,5,1)
+  Iniciar(fisco,1,1)
+fin

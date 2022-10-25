@@ -1,0 +1,80 @@
+programa ejercicio35
+procesos
+  proceso procesarEsquinaF(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF:=cF+1
+  fin
+  proceso procesarAvenida(ES cF: numero; E alt: numero)
+  comenzar
+    repetir (alt)
+      procesarEsquinaF(cF)
+      mover
+    procesarEsquinaF(cF)
+  fin
+areas
+  areaR: AreaC(1,11,100,100)
+  areaR1: AreaP(2,2,2,2)
+  areaR2: AreaP(6,6,6,6)
+  areaBoss: AreaP(1,1,1,1)
+  areaDeposito: AreaPC(10,10,10,10)
+robots
+  robot florero
+  variables
+    altura, posAv, firstAv, posCa, flores: numero
+  comenzar
+    RecibirMensaje(altura,Boss)
+    RecibirMensaje(posAv,Boss)
+    RecibirMensaje(posCa,Boss)
+    Pos(posAv,posCa)
+    firstAv:=(PosAv)
+    posAv:=(PosAv)
+    posCa:=(PosCa)
+    flores:=0
+    repetir 15
+      procesarAvenida(flores,altura)
+      posAv:=posAv+1
+      Pos(posAv,posCa)
+    procesarAvenida(flores,altura)
+    mientras HayFlorEnLaBolsa
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarFlor
+      Pos(firstAv,posCa)
+      LiberarEsquina(10,10)
+  fin
+  robot jefe
+  variables
+    altura_R1, altura_R2, posAv, posCa: numero
+  comenzar
+    Random(altura_R1,1,20)  {Altura aleatoria}
+    posAv:=8 {Indica una avenida a comenzar; reservar 20 espacios distantes entre el otro Robot}
+    posCa:=11 {Indico una calle a comenzar; mayor a 10}
+    EnviarMensaje(altura_R1,r2d2)
+    EnviarMensaje(posAv,r2d2)
+    EnviarMensaje(posCa,r2d2)
+    Random(altura_R2,1,20) {Altura aleatoria}
+    posAv:=24
+    posCa:=26
+    EnviarMensaje(altura_R2,c3po)
+    EnviarMensaje(posAv,c3po)
+    EnviarMensaje(posCa,c3po)
+  fin
+variables
+  r2d2: florero
+  c3po: florero
+  Boss: jefe
+comenzar
+  AsignarArea(r2d2,areaR)
+  AsignarArea(c3po,areaR)
+  AsignarArea(r2d2,areaR1)
+  AsignarArea(c3po,areaR2)
+  AsignarArea(Boss,areaBoss)
+  AsignarArea(r2d2,areaDeposito)
+  AsignarArea(c3po,areaDeposito)
+  Iniciar(r2d2,2,2)
+  Iniciar(c3po,6,6)
+  Iniciar(Boss,1,1)
+fin

@@ -1,0 +1,102 @@
+programa ejercicio38
+procesos
+  proceso procesarEsquinaF(ES cF: numero; ES hay: boolean)
+  comenzar
+    si HayFlorEnLaEsquina
+      tomarFlor
+      cF:=cF+1
+    sino
+      hay:=F
+  fin
+areas
+  areaR1: AreaP(9,9,9,9)
+  areaR2: AreaP(11,9,11,9)
+  areaR3: AreaP(13,9,13,9)
+  areaJefe: AreaP(1,9,1,9)
+  areaVivero: AreaPC(15,23,15,23)
+  areaDeposito: AreaPC(20,20,20,20)
+robots
+  robot florero
+  variables
+    quienSoy, posAv, posCa, flores: numero
+    hay, won: boolean
+  comenzar
+    RecibirMensaje(quienSoy,boss)
+    hay:=V
+    posAv:=PosAv
+    posCa:=PosCa
+    mientras (hay)
+      BloquearEsquina(15,23)
+      Pos(15,23)
+      procesarEsquinaF(flores,hay)
+      Pos(posAv,posCa)
+      LiberarEsquina(15,23)
+    EnviarMensaje(quienSoy,boss)
+    EnviarMensaje(flores,boss)
+    RecibirMensaje(won,boss) {Mensaje que llega, si el robot gano}
+    si (won)  {Si gano; deposita todas las flores en la esquina 20:20}
+      Pos(20,20)
+      mientras HayFlorEnLaBolsa
+        depositarFlor
+      Pos(posAv,posCa)
+  fin
+  robot jefe
+  variables
+    flores, cantF, quien, cantMax, idWinner: numero
+    winner: boolean
+  comenzar
+    cantMax:=-9999
+    winner:=V
+    EnviarMensaje(1,r2d2)
+    EnviarMensaje(2,c3po)
+    EnviarMensaje(3,bb8)
+    repetir 3
+      RecibirMensaje(quien,*)
+      si (quien=1)
+        RecibirMensaje(cantF,r2d2)
+      sino
+        si (quien=2)
+          RecibirMensaje(cantF,c3po)
+        sino
+          RecibirMensaje(cantF,bb8)
+      si (cantF>cantMax)
+        cantMax:=cantF
+        idWinner:=quien
+    si (idWinner=1)
+      EnviarMensaje(winner,r2d2)
+      winner:=F
+      EnviarMensaje(winner,c3po)
+      EnviarMensaje(winner,bb8)
+    sino
+      si (idWinner=2)
+        EnviarMensaje(winner,c3po)
+        winner:=F
+        EnviarMensaje(winner,r2d2)
+        EnviarMensaje(winner,bb8)
+      sino
+        EnviarMensaje(winner,bb8)
+        winner:=F
+        EnviarMensaje(winner,r2d2)
+        EnviarMensaje(winner,c3po)
+  fin
+variables
+  r2d2: florero
+  c3po: florero
+  bb8: florero
+  boss: jefe
+comenzar
+  AsignarArea(r2d2,areaR1)
+  AsignarArea(c3po,areaR2)
+  AsignarArea(bb8,areaR3)
+  AsignarArea(boss,areaJefe)
+  AsignarArea(r2d2,areaVivero)
+  AsignarArea(c3po,areaVivero)
+  AsignarArea(bb8,areaVivero)
+  AsignarArea(r2d2,areaDeposito)
+  AsignarArea(c3po,areaDeposito)
+  AsignarArea(bb8,areaDeposito)
+  Iniciar(r2d2,9,9)
+  Iniciar(c3po,11,9)
+  Iniciar(bb8,13,9)
+  Iniciar(boss,1,9)
+fin

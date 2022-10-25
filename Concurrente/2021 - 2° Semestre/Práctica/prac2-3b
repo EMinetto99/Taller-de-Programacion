@@ -1,0 +1,95 @@
+programa ejer2
+procesos
+  proceso procesarEsquinaF(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF:=cF+1
+  fin
+  proceso procesarEsquinaP(ES cP: numero)
+  comenzar
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+        cP:=cP+1
+  fin
+  proceso procesarSegmentoB(ES cF: numero)
+  comenzar
+    repetir 9
+      procesarEsquinaF(cF)
+      mover
+    procesarEsquinaF(cF)
+  fin
+  proceso procesarSegmentoA(ES cP: numero)
+  comenzar
+    repetir 9
+      procesarEsquinaP(cP)
+      mover
+    procesarEsquinaP(cP)
+  fin
+areas
+  areaA: AreaPC(1,1,20,1)
+  areaB: AreaPC(1,5,20,5)
+robots
+  robot papelero1
+  variables
+    cantP, posAv: numero
+  comenzar
+    cantP:=0
+    Pos(1,1)
+    derecha
+    procesarSegmentoA(cantP)
+    posAv:=(PosAv)+1
+    EnviarMensaje(cantP,A2)
+    EnviarMensaje(posAv,A2)
+  fin
+  robot papelero2
+  variables
+    cantP, posAv: numero
+  comenzar
+    RecibirMensaje(cantP,A1)
+    RecibirMensaje(posAv,A1)
+    Pos((posAv),1)
+    derecha
+    procesarSegmentoA(cantP)
+    Informar('Cant_total_papeles',cantP)
+  fin
+  robot florero1
+  variables
+    cantF, posAv: numero
+  comenzar
+    cantF:=0
+    Pos(1,5)
+    derecha
+    procesarSegmentoB(cantF)
+    posAv:=(PosAv)+1
+    EnviarMensaje(cantF,B2)
+    EnviarMensaje(posAv,B2)
+  fin
+  robot florero2
+  variables
+    cantF, posAv: numero
+  comenzar
+    RecibirMensaje(cantF,B1)
+    RecibirMensaje(posAv,B1)
+    Pos((posAv),5)
+    derecha
+    procesarSegmentoA(cantF)
+    Informar('Cant_total_flores',cantF)
+  fin
+variables
+  A1: papelero1
+  A2: papelero2
+  B1: florero1
+  B2: florero2
+comenzar
+  AsignarArea(A1,areaA)
+  AsignarArea(A2,areaA)
+  AsignarArea(B1,areaB)
+  AsignarArea(B2,areaB)
+  Iniciar(A1,1,1)
+  Iniciar(A2,40,1)
+  Iniciar(B1,1,5)
+  Iniciar(B2,40,5)
+fin
