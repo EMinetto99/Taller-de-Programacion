@@ -13,7 +13,7 @@
 - Merge 🔗⛓
 ### Práctica:
 - [Prácticas](/Imperativo/2022%20-%202°%20Semestre/Práctica)
-- [Ejercicios - Práctica 1 (Ordenación)](\Imperativo\2022%20-%202°%20Semestre\Práctica\Práctica 1)
+- [Ejercicios - Práctica 1 (Ordenación)](/Imperativo/2022%20-%202°%20Semestre/Práctica/Práctica%201)
 - [Ejercicios - Práctica 2 (Recursión)]()
 - [Ejercicios - Práctica 3 (Árboles)]()
 - [Ejercicios - Práctica 4 (Merge)]()
