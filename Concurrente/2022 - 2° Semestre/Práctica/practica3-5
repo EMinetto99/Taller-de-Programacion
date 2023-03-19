@@ -1,0 +1,86 @@
+programa practica3Ejer5
+areas
+  areaAvenida1: AreaP(4,1,4,100)
+  areaAvenida2: AreaP(6,1,6,100)
+  areaAvenida3: AreaP(8,1,8,100)
+  areaAvenida4: AreaP(10,1,10,100)
+  areaFuente: AreaPC(11,11,11,11)
+  areaCoordinador: AreaP(1,1,1,1)
+robots
+  robot papelero
+  variables
+    CaAct, AvAct, pasos, quienSoy: numero
+    hay: boolean
+  comenzar
+    RecibirMensaje(quienSoy,coor)
+    hay := V
+    pasos := 0
+    mientras (hay) & (pasos < 99)
+      AvAct := PosAv
+      CaAct := PosCa
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      si HayPapelEnLaEsquina
+        tomarPapel
+      sino
+        hay := F
+      Pos(AvAct,CaAct)
+      LiberarEsquina(11,11)
+      si (hay)
+        depositarPapel
+        mover
+        pasos := (pasos) + 1
+    EnviarMensaje(quienSoy,coor)
+    EnviarMensaje(pasos,coor)
+  fin
+  robot coordinador
+  variables
+    robotID, cant, cantMax, winnerID: numero
+  comenzar
+    cantMax := -9999
+    EnviarMensaje(1,P1)
+    EnviarMensaje(2,P2)
+    EnviarMensaje(3,P3)
+    EnviarMensaje(4,P4)
+    repetir (4)
+      RecibirMensaje(robotID,*)
+      si (robotID = 1)
+        RecibirMensaje(cant,P1)
+      sino
+        si (robotID = 2)
+          RecibirMensaje(cant,P2)
+        sino
+          si (robotID = 3)
+            RecibirMensaje(cant,P3)
+          sino
+            RecibirMensaje(cant,P4)
+      si (cant > cantMax)
+        cantMax := cant
+        winnerID := robotID
+    si (cant = 99)
+      Informar('El_ROBOT_que_termino_primero_fue_el_',robotID)
+    sino
+      Informar('El_ROBOT_que_llego_mas_lejos_',robotID)
+  fin
+variables
+  P1: papelero
+  P2: papelero
+  P3: papelero
+  P4: papelero
+  coor: coordinador
+comenzar
+  AsignarArea(P1,areaAvenida1)
+  AsignarArea(P2,areaAvenida2)
+  AsignarArea(P3,areaAvenida3)
+  AsignarArea(P4,areaAvenida4)
+  AsignarArea(P1,areaFuente)
+  AsignarArea(P2,areaFuente)
+  AsignarArea(P3,areaFuente)
+  AsignarArea(P4,areaFuente)
+  AsignarArea(coor,areaCoordinador)
+  Iniciar(P1,4,1)
+  Iniciar(P2,6,1)
+  Iniciar(P3,8,1)
+  Iniciar(P4,10,1)
+  Iniciar(coor,1,1)
+fin

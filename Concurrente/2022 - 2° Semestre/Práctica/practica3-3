@@ -1,0 +1,90 @@
+programa practica3Ejer3
+procesos
+  proceso procesarFlor(ES cF: numero; ES hay: boolean)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF := cF + 1
+    sino
+      hay := F
+  fin
+areas
+  areaFlores: AreaPC(2,2,10,10)
+  areaFlorero1: AreaP(2,1,2,1)
+  areaFlorero2: AreaP(3,1,3,1)
+  areaFlorero3: AreaP(4,1,4,1)
+  areaFlorero4: AreaPC(5,1,5,1)
+  areaJefe: AreaPC(1,1,1,1)
+robots
+  robot florero
+  variables
+    cantF, CaIni, AvIni, indCA, indAV, quienSoy: numero
+    hay: boolean
+  comenzar
+    RecibirMensaje(quienSoy,jefe)
+    RecibirMensaje(indAV,jefe)
+    RecibirMensaje(indCA,jefe)
+    cantF := 0
+    hay := V
+    AvIni := PosAv
+    CaIni := PosCa
+    mientras (hay)
+      BloquearEsquina(indAV,indCA)
+      Pos(indAV,indCA)
+      procesarFlor(cantF, hay)
+      Pos(AvIni,CaIni)
+      EnviarMensaje(hay, jefe)
+      LiberarEsquina(indAV,indCA)
+      RecibirMensaje(hay, jefe)
+    EnviarMensaje(quienSoy,jefe)
+    EnviarMensaje(cantF,jefe)
+  fin
+  robot robotJefe
+  variables
+    cant, cantMax, maxID, rndAV, rndCA: numero
+    hay: boolean
+  comenzar
+    cantMax := -9999
+    EnviarMensaje(1,F1)
+    EnviarMensaje(2,F2)
+    EnviarMensaje(3,F3)
+    EnviarMensaje(4,F4)
+
+    Random(rndAV,2,10)
+    Random(rndCA,2,10)
+
+    EnviarMensaje(rndAV,F1)
+    EnviarMensaje(rndAV,F2)
+    EnviarMensaje(rndAV,F3)
+    EnviarMensaje(rndAV,F4)
+
+    EnviarMensaje(rndCA,F1)
+    EnviarMensaje(rndCA,F2)
+    EnviarMensaje(rndCA,F3)
+    EnviarMensaje(rndCA,F4)
+
+    
+  fin
+variables
+  F1: florero
+  F2: florero
+  F3: florero
+  F4: florero
+  jefe: robotJefe
+comenzar
+  AsignarArea(F1,areaFlorero1)
+  AsignarArea(F2,areaFlorero2)
+  AsignarArea(F3,areaFlorero3)
+  AsignarArea(F4,areaFlorero4)
+  AsignarArea(F1,areaFlores)
+  AsignarArea(F2,areaFlores)
+  AsignarArea(F3,areaFlores)
+  AsignarArea(F4,areaFlores)
+  AsignarArea(jefe,areaJefe)
+  Iniciar(F1,2,1)
+  Iniciar(F2,3,1)
+  Iniciar(F3,4,1)
+  Iniciar(F4,5,1)
+  Iniciar(jefe,1,1)
+fin

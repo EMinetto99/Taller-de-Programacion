@@ -1,0 +1,91 @@
+programa practica1Ejer2
+procesos
+  proceso izquierda
+  comenzar
+    repetir (3)
+      derecha
+  fin
+  proceso procesarPapel(ES cantP: numero)
+  comenzar
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+        cantP := cantP + 1
+  fin
+  proceso procesarLado(ES cantP: numero)
+  comenzar
+    repetir 19
+      procesarPapel(cantP)
+      mover
+    si HayPapelEnLaEsquina
+      procesarPapel(cantP)
+  fin
+areas
+  areaPapelero1: AreaP(10, 11, 10, 28)
+  areaPapelero2: AreaP(11, 29, 28, 29)
+  areaPapelero3: AreaP(29, 11, 29, 28)
+  areaPapelero4: AreaP(11, 10, 28, 10)
+  areaCompartida1: AreaPC(10, 10, 10, 10)
+  areaCompartida2: AreaPC(10, 29, 10, 29)
+  areaCompartida3: AreaPC(29, 29, 29, 29)
+  areaCompartida4: AreaPC(29, 10, 29, 10)
+robots
+  robot papelero1
+  variables
+    cantP: numero
+  comenzar
+    cantP := 0
+    procesarLado(cantP)
+    Informar('Cantidad_de_papeles_',cantP)
+  fin
+  robot papelero2
+  variables
+    cantP: numero
+  comenzar
+    cantP := 0
+    derecha
+    procesarLado(cantP)
+    Informar('Cantidad_de_papeles_',cantP)
+  fin
+  robot papelero3
+  variables
+    cantP: numero
+  comenzar
+    cantP := 0
+    repetir (2)
+      derecha
+    procesarLado(cantP)
+    Informar('Cantidad_de_papeles_',cantP)
+  fin
+  robot papelero4
+  variables
+    cantP: numero
+  comenzar
+    cantP := 0
+    izquierda
+    procesarLado(cantP)
+    Informar('Cantidad_de_papeles_',cantP)
+  fin
+variables
+  Robot1: papelero1
+  Robot2: papelero2
+  Robot3: papelero3
+  Robot4: papelero4
+comenzar
+  AsignarArea(Robot1,areaPapelero1)
+  AsignarArea(Robot2,areaPapelero2)
+  AsignarArea(Robot3,areaPapelero3)
+  AsignarArea(Robot4,areaPapelero4)
+  AsignarArea(Robot1,areaCompartida1)
+  AsignarArea(Robot4,areaCompartida1)
+  AsignarArea(Robot1,areaCompartida2)
+  AsignarArea(Robot2,areaCompartida2)
+  AsignarArea(Robot2,areaCompartida3)
+  AsignarArea(Robot3,areaCompartida3)
+  AsignarArea(Robot3,areaCompartida4)
+  AsignarArea(Robot4,areaCompartida4)
+  Iniciar(Robot1,10,10)
+  Iniciar(Robot2,10,29)
+  Iniciar(Robot3,29,29)
+  Iniciar(Robot4,29,10)
+fin

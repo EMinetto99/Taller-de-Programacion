@@ -1,0 +1,63 @@
+programa practica2Ejer1b
+procesos
+  proceso procesarFlor(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF := cF + 1
+  fin
+areas
+  areaFlorero1: AreaP(1, 1, 1, 10)
+  areaFlorero2: AreaP(2, 11, 2, 20)
+  areaFiscal: AreaP(2, 1, 2, 1)
+robots
+  robot florero
+  variables
+    cantF, quienSoy: numero
+  comenzar
+    RecibirMensaje(quienSoy, fiscal)
+    cantF := 0
+    repetir 9
+      procesarFlor(cantF)
+      mover
+    procesarFlor(cantF)
+    EnviarMensaje(quienSoy, fiscal)
+    EnviarMensaje(cantF, fiscal)
+  fin
+  robot fiscalizador
+  variables
+    quienSoy: numero
+    cantR1, cantR2, diffR1, diffR2: numero
+  comenzar
+    EnviarMensaje(1, Robot1)
+    EnviarMensaje(2, Robot2)
+    repetir (2)
+      RecibirMensaje(quienSoy,*)
+      si (quienSoy = 1)
+        RecibirMensaje(cantR1, Robot1)
+      sino
+        RecibirMensaje(cantR2, Robot2)
+    diffR1 := (cantR1 - cantR2)
+    diffR2 := (cantR2 - cantR1)
+    si (diffR1 = 0)
+      Informar('Los_ROBOTS_están_EMPATADOS_con_diferencia_de_',diffR1)
+    sino
+      si (diffR1 > 0)
+        Informar('El_ROBOT1_fue_el_ganador_con_diferencia_de_',diffR1)
+      sino
+        Informar('El_ROBOT2_fue_el_ganador_con_diferencia_de_',diffR2)
+  fin
+variables
+  Robot1: florero
+  Robot2: florero
+  fiscal: fiscalizador
+comenzar
+  AsignarArea(Robot1,areaFlorero1)
+  AsignarArea(Robot2,areaFlorero2)
+  AsignarArea(fiscal,areaFiscal)
+  Iniciar(Robot1,1,1)
+  Iniciar(Robot2,2,11)
+  Iniciar(fiscal,2,1)
+fin
+

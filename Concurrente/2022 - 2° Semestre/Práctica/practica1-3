@@ -1,0 +1,72 @@
+programa practica1Ejer3
+procesos
+  proceso izquierda
+  comenzar
+    repetir (3)
+      derecha
+  fin
+  proceso procesarPapel(ES cP: numero)
+  comenzar
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+        cP := cP + 1
+  fin
+  proceso procesarFlor(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF := cF + 1
+  fin
+  proceso procesarLado(E lado: numero; ES cantP: numero; ES cantF: numero)
+  comenzar
+    repetir (lado)
+      procesarPapel(cantP)
+      procesarFlor(cantF)
+      mover
+  fin
+  proceso escalon(ES cantEsc: numero; E size: numero)
+  variables
+    cantF, cantP, diff: numero
+  comenzar
+    cantF := 0
+    cantP := 0
+    procesarLado(size,cantP,cantF)
+    derecha
+    procesarLado(size,cantP,cantF)
+    izquierda
+    diff := (cantP - cantF)
+    si (diff >= 1)
+      cantEsc := cantEsc + 1
+  fin
+  proceso Escalera
+  variables
+    cantEsc, size: numero
+  comenzar
+    size := 1
+    cantEsc := 0
+    repetir (4)
+      escalon(cantEsc,size)
+      size := size + 1
+    Informar('Cantidad_de_escalones_con_mas_PAPELES_que_flores_',cantEsc)
+  fin
+areas
+  areaEscalera: AreaC(12, 6, 100, 100)
+robots
+  robot escaleno
+  comenzar
+    Escalera
+  fin
+variables
+  Robot1: escaleno
+  Robot2: escaleno
+  Robot3: escaleno
+comenzar
+  AsignarArea(Robot1,areaEscalera)
+  AsignarArea(Robot2,areaEscalera)
+  AsignarArea(Robot3,areaEscalera)
+  Iniciar(Robot1,12,14)
+  Iniciar(Robot2,17,10)
+  Iniciar(Robot3,22,6)
+fin

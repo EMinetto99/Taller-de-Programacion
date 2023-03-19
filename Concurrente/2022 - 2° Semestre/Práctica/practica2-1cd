@@ -1,0 +1,94 @@
+programa practica2Ejer1cd
+procesos
+  proceso procesarFlor(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF := cF + 1
+  fin
+areas
+  areaFlorero1: AreaP(1, 1, 1, 10)
+  areaFlorero2: AreaP(2, 11, 2, 20)
+  areaFlorero3: AreaP(3, 21, 3, 30)
+  areaFlorero4: AreaP(2, 31, 4, 40)
+  areaFlorero5: AreaP(2, 41, 5, 50)
+  areaFlorero6: AreaP(2, 51, 6, 60)
+  areaFiscal: AreaP(2, 1, 2, 1)
+robots
+  robot florero
+  variables
+    cantF, quienSoy: numero
+  comenzar
+    RecibirMensaje(quienSoy, fiscal)
+    cantF := 0
+    repetir 9
+      procesarFlor(cantF)
+      mover
+    procesarFlor(cantF)
+    EnviarMensaje(quienSoy, fiscal)
+    EnviarMensaje(cantF, fiscal)
+  fin
+  robot fiscalizador
+  variables
+    quienSoy: numero
+    cant, winnerID, cantWinner: numero
+  comenzar
+    cantWinner := -9999
+    EnviarMensaje(1, Robot1)
+    EnviarMensaje(2, Robot2)
+    EnviarMensaje(3, Robot3)
+    EnviarMensaje(4, Robot4)
+    EnviarMensaje(5, Robot5)
+    EnviarMensaje(6, Robot6)
+    repetir (6)
+      RecibirMensaje(quienSoy,*)
+      si (quienSoy = 1)
+        RecibirMensaje(cant, Robot1)
+      sino
+        si (quienSoy = 2)
+          RecibirMensaje(cant, Robot2)
+        sino
+          si (quienSoy = 3)
+            RecibirMensaje(cant, Robot3)
+          sino
+            si (quienSoy = 4)
+              RecibirMensaje(cant, Robot4)
+            sino
+              si (quienSoy = 5)
+                RecibirMensaje(cant, Robot5)
+              sino
+                RecibirMensaje(cant, Robot6)
+      si (cant > cantWinner)
+        cantWinner := cant
+        winnerID := quienSoy
+    si (cantWinner > 0)
+      Informar('Robot_ganador_',winnerID)
+      Informar('Con_una_cantidad_de_flores_',cantWinner)
+    sino
+      Informar('Robot_EMPATADOS_con_',cantWinner)
+  fin
+variables
+  Robot1: florero
+  Robot2: florero
+  Robot3: florero
+  Robot4: florero
+  Robot5: florero
+  Robot6: florero
+  fiscal: fiscalizador
+comenzar
+  AsignarArea(Robot1,areaFlorero1)
+  AsignarArea(Robot2,areaFlorero2)
+  AsignarArea(Robot3,areaFlorero3)
+  AsignarArea(Robot4,areaFlorero4)
+  AsignarArea(Robot5,areaFlorero5)
+  AsignarArea(Robot6,areaFlorero6)
+  AsignarArea(fiscal,areaFiscal)
+  Iniciar(Robot1,1,1)
+  Iniciar(Robot2,2,11)
+  Iniciar(Robot3,3,21)
+  Iniciar(Robot4,4,31)
+  Iniciar(Robot5,4,41)
+  Iniciar(Robot6,5,51)
+  Iniciar(fiscal,2,1)
+fin

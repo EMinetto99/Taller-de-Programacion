@@ -1,0 +1,112 @@
+programa practica2Ejer3B
+procesos
+  proceso procesarFlor(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF := cF + 1
+  fin
+  proceso procesarPapel(ES cP: numero)
+  comenzar
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+        cP := cP + 1
+  fin
+  proceso procesarCalleP(ES cP: numero)
+  comenzar
+    repetir (9)
+      procesarPapel(cP)
+      mover
+    procesarPapel(cP)
+  fin
+  proceso procesarCalleF(ES cF: numero)
+  comenzar
+    repetir (9)
+      procesarFlor(cF)
+      mover
+    procesarFlor(cF)
+  fin
+areas
+  areaA1_a: AreaP(1, 1, 10, 1)
+  areaA2_a: AreaP(11, 1, 20, 1)
+  areaB1_a: AreaP(1, 5, 10, 5)
+  areaB2_a: AreaP(11, 5, 20, 5)
+  areaA1_b: AreaP(21, 1, 30, 1)
+  areaA2_b: AreaP(31, 1, 40, 1)
+  areaB1_b: AreaP(21, 5, 30, 5)
+  areaB2_b: AreaP(31, 5, 40, 5)
+robots
+  robot papelero1
+  variables
+    cantP: numero
+  comenzar
+    cantP := 0
+    derecha
+    procesarCalleP(cantP)
+    EnviarMensaje(cantP, A2)
+    Pos(PosAv+11,PosCa)
+    cantP := 0
+    procesarCalleP(cantP)
+    EnviarMensaje(cantP, A2)
+  fin
+  robot papelero2
+  variables
+    cantP: numero
+  comenzar
+    derecha
+    RecibirMensaje(cantP, A1)
+    procesarCalleP(cantP)
+    Informar('Cantidad_total_de_papeles_',cantP)
+    Pos(PosAv+11,PosCa)
+    RecibirMensaje(cantP, A1)
+    procesarCalleP(cantP)
+    Informar('Cantidad_total_de_papeles_',cantP)
+  fin
+  robot florero1
+  variables
+    cantF: numero
+  comenzar
+    cantF := 0
+    derecha
+    procesarCalleF(cantF)
+    EnviarMensaje(cantF, B2)
+    Pos(PosAv+11,PosCa)
+    cantF := 0
+    procesarCalleF(cantF)
+    EnviarMensaje(cantF, B2)
+  fin
+  robot florero2
+  variables
+    cantF: numero
+  comenzar
+    derecha
+    RecibirMensaje(cantF, B1)
+    procesarCalleF(cantF)
+    Informar('Cantidad_total_de_flores_',cantF)
+    Pos(PosAv+11,PosCa)
+    RecibirMensaje(cantF, B1)
+    procesarCalleF(cantF)
+    Informar('Cantidad_total_de_flores_',cantF)
+  fin
+variables
+  A1: papelero1
+  A2: papelero2
+  B1: florero1
+  B2: florero2
+comenzar
+  AsignarArea(A1,areaA1_a)
+  AsignarArea(A1,areaA1_b)
+  AsignarArea(A2,areaA2_a)
+  AsignarArea(A2,areaA2_b)
+  AsignarArea(B1,areaB1_a)
+  AsignarArea(B1,areaB1_b)
+  AsignarArea(B2,areaB2_a)
+  AsignarArea(B2,areaB2_b)
+  Iniciar(A1,1,1)
+  Iniciar(A2,11,1)
+  Iniciar(B1,1,5)
+  Iniciar(B2,11,5)
+fin
+

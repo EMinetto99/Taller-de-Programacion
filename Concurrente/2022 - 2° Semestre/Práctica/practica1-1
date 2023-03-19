@@ -1,0 +1,36 @@
+programa practica1Ejer1
+procesos
+  proceso procesarFlor(ES cantF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cantF := cantF + 1
+  fin
+  proceso procesarAvenida(ES cantF: numero)
+  comenzar
+    repetir 99
+      procesarFlor(cantF)
+      mover
+    si HayFlorEnLaEsquina
+      procesarFlor(cantF)
+    repetir (cantF)
+      depositarFlor
+  fin
+areas
+  areaFlorero: AreaP(1,1,1,100)
+robots
+  robot florero
+  variables
+    cantF: numero
+  comenzar
+    cantF := 0
+    procesarAvenida(cantF)
+    Informar('Cantidad_de_flores_',cantF)
+  fin
+variables
+  Robot1: florero
+comenzar
+  AsignarArea(Robot1,areaFlorero)
+  Iniciar(Robot1,1,1)
+fin

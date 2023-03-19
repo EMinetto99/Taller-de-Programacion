@@ -1,0 +1,96 @@
+programa practica4Ejer2
+procesos
+  proceso depositarEsquina(ES cP: numero)
+  variables
+    posCA, posAV: numero
+  comenzar
+    posCA := PosCa
+    posAV := PosAv
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    repetir (5)
+      depositarPapel
+      cP := cP - 1
+    Pos(posAV,posCA)
+    LiberarEsquina(50,50)
+  fin
+  proceso procesarPapel(ES cP: numero)
+  comenzar
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+        cP := cP + 1
+        si (cP = 5)
+          depositarEsquina(cP)
+  fin
+areas
+  areaProductor1: AreaP(5,1,5,100)
+  areaProductor2: AreaP(10,1,10,100)
+  areaDeposito: AreaC(50,50,50,50)
+  areaConsumidor1: AreaP(11,1,11,1)
+  areaConsumidor2: AreaP(12,1,12,1)
+robots
+  robot productor
+  variables
+    cantP: numero
+  comenzar
+    cantP := 0
+    repetir (99)
+      procesarPapel(cantP)
+      mover
+    procesarPapel(cantP)
+  fin
+  robot consumidor
+  variables
+    CaIni, AvIni, rndCant, cantP, cantIntentos: numero
+    hay: boolean
+  comenzar
+    AvIni := PosAv
+    CaIni := PosCa
+    cantIntentos := 0
+    mientras (cantIntentos < 8)
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      si (HayPapelEnLaEsquina)
+        Random(rndCant,2,5)
+        si (HayPapelEnLaEsquina) & (cantP <= rndCant)
+          tomarPapel
+          cantP := cantP + 1
+        si (cantP = rndCant)
+          hay := V
+          Pos(AvIni,CaIni)
+          LiberarEsquina(50,50)
+          repetir (cantP)
+            depositarPapel
+          cantIntentos := 0
+        sino
+          hay := F
+          repetir (cantP)
+            depositarPapel
+      sino
+        hay := F
+      si ~(hay)
+        cantIntentos := cantIntentos + 1
+        Pos(AvIni,CaIni)
+        LiberarEsquina(50,50)
+      cantP := 0
+  fin
+variables
+  P1: productor
+  P2: productor
+  C1: consumidor
+  C2: consumidor
+comenzar
+  AsignarArea(P1,areaProductor1)
+  AsignarArea(P2,areaProductor2)
+  AsignarArea(P1,areaDeposito)
+  AsignarArea(P2,areaDeposito)
+  AsignarArea(C1,areaDeposito)
+  AsignarArea(C2,areaDeposito)
+  AsignarArea(C1,areaConsumidor1)
+  AsignarArea(C2,areaConsumidor2)
+  Iniciar(P1,5,1)
+  Iniciar(P2,10,1)
+  Iniciar(C1,11,1)
+  Iniciar(C2,12,1)
+fin

@@ -1,0 +1,111 @@
+programa practica4Ejer3a
+procesos
+  proceso depositarEsquina(ES cP: numero)
+  variables
+    posCA, posAV: numero
+  comenzar
+    posCA := PosCa
+    posAV := PosAv
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    repetir (5)
+      depositarPapel
+      cP := cP - 1
+    Pos(posAV,posCA)
+    LiberarEsquina(50,50)
+  fin
+  proceso procesarPapel
+  comenzar
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+  fin
+areas
+  areaPapelero1: AreaP(1,1,1,100)
+  areaPapelero2: AreaP(2,1,2,100)
+  areaPapelero3: AreaP(3,1,3,100)
+  areaCoordinador: AreaP(4,1,4,1)
+robots
+  robot papelero1
+  variables
+    quienSoy: numero
+    done: boolean
+  comenzar
+    RecibirMensaje(quienSoy,coor)
+    repetir (19)
+      repetir (4)
+        procesarPapel
+        mover
+      procesarPapel
+      EnviarMensaje(V,P2)
+      EnviarMensaje(V,P3)
+      RecibirMensaje(done,P2)
+      RecibirMensaje(done,P3)
+      mover
+    repetir (4)
+      procesarPapel
+      mover
+    procesarPapel
+  fin
+  robot papelero2
+  variables
+    quienSoy: numero
+    done: boolean
+  comenzar
+    RecibirMensaje(quienSoy,coor)
+    repetir (19)
+      repetir (4)
+        procesarPapel
+        mover
+      procesarPapel
+      EnviarMensaje(V,P1)
+      EnviarMensaje(V,P3)
+      RecibirMensaje(done,P1)
+      RecibirMensaje(done,P3)
+      mover
+    repetir (4)
+      procesarPapel
+      mover
+    procesarPapel
+  fin
+  robot papelero3
+  variables
+    quienSoy: numero
+    done: boolean
+  comenzar
+    repetir (19)
+      repetir (4)
+        procesarPapel
+        mover
+      procesarPapel
+      EnviarMensaje(V,P1)
+      EnviarMensaje(V,P2)
+      RecibirMensaje(done,P1)
+      RecibirMensaje(done,P2)
+      mover
+    repetir (4)
+      procesarPapel
+      mover
+    procesarPapel
+  fin
+  robot coordinador
+  comenzar
+    EnviarMensaje(1,P1)
+    EnviarMensaje(2,P2)
+    EnviarMensaje(3,P3)
+  fin
+variables
+  P1: papelero1
+  P2: papelero2
+  P3: papelero3
+  coor: coordinador
+comenzar
+  AsignarArea(P1,areaPapelero1)
+  AsignarArea(P2,areaPapelero2)
+  AsignarArea(P3,areaPapelero3)
+  AsignarArea(coor,areaCoordinador)
+  Iniciar(P1,1,1)
+  Iniciar(P2,2,1)
+  Iniciar(P3,3,1)
+  Iniciar(coor,4,1)
+fin

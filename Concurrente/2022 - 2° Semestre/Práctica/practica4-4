@@ -1,0 +1,96 @@
+programa practica4Ejer4
+procesos
+  proceso procesarFlores(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF := cF + 1
+  fin
+  proceso procesarPapel(ES cP: numero)
+  comenzar
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+        cP := cP + 1
+  fin
+areas
+  areaTrabajador1: AreaP(2,1,2,1)
+  areaTrabajador2: AreaP(3,1,3,1)
+  areaTrabajo: AreaPC(2,2,100,100)
+  areaJefe: AreaP(1,1,1,1)
+robots
+  robot trabajador
+  variables
+    quienSoy, AvIni, CaIni, cantF, cantP, posAv, posCa, task: numero
+    done: boolean
+  comenzar
+    cantF := 0
+    cantP := 0
+    done := F
+    AvIni := PosAv
+    CaIni := PosCa
+    RecibirMensaje(quienSoy,jefe)
+    RecibirMensaje(task,jefe)
+    mientras (task <> 4)
+      RecibirMensaje(posAv, jefe)
+      RecibirMensaje(posCa, jafe)
+      BloquearEsquina(posAv, posCa)
+      Pos(posAv,posCa)
+      si (task = 1)
+        procesarFlores(cantF)
+      sino
+        si (task = 2)
+          procesarPapeles(cantP)
+        sino
+          read
+      Pos(AvIni, CaIni)
+      LiberarEsquina(posAv, posCa)
+      EnviarMensaje(done, jefe)
+  fin
+  robot jefazo
+  variables
+    task, intentos, rndCA, rndAV, rndRobot: numero
+    finishT1, finishT2: boolean
+  comenzar
+    EnviarMensaje(1,T1)
+    EnviarMensaje(2,T2)
+    intentos := 0
+    mientras ~((finishT1) | (finishT1)) & (intentos < 10)
+      Random(task,1,4)
+      si (task <> 4)
+        Random(rndAV,2,100)
+        Random(rndCA,2,100)
+      Random(rndRobot,1,2)
+      si (rndRobot = 1)
+        EnviarMensaje(task,T1)
+        si (task <> 4)
+          EnviarMensaje(rndAV,T1)
+          EnviarMensaje(rndCA,T1)
+          RecibirMensaje(finishT1,T1)
+      sino
+        EnviarMensaje(task,T2)
+        si (task <> 4)
+          EnviarMensaje(rndAV,T2)
+          EnviarMensaje(rndCA,T2)
+          RecibirMensaje(finishT2,T2)
+      intentos := intentos + 1
+    si ~(finishT1)
+      EnviarMensaje(4,T1)
+    si ~(finishT2)
+      EnviarMensaje(4,T2)
+  fin
+variables
+  T1: trabajador
+  T2: trabajador
+  jefe: jefazo
+comenzar
+  AsignarArea(T1,areaTrabajador1)
+  AsignarArea(T2,areaTrabajador2)
+  AsignarArea(T1,areaTrabajo)
+  AsignarArea(T2,areaTrabajo)
+  AsignarArea(jefe,areaJefe)
+  Iniciar(T1,2,1)
+  Iniciar(T2,3,1)
+  Iniciar(jefe,1,1)
+fin

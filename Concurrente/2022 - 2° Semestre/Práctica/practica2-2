@@ -1,0 +1,87 @@
+programa practica2Ejer2
+procesos
+  proceso izquierda
+  comenzar
+    repetir (3)
+      derecha
+  fin
+  proceso procesarFlor(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF := cF + 1
+  fin
+  proceso procesarPapel(ES cP: numero)
+  comenzar
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+        cP := cP + 1
+  fin
+  proceso procesarAlto(ES cF: numero; ES cP: numero)
+  variables
+    cant: numero
+  comenzar
+    Random(cant,1,5)
+    repetir (cant)
+      procesarFlor(cF)
+      procesarPapel(cP)
+      mover
+  fin
+  proceso procesarAncho(ES cF: numero; ES cP: numero)
+  comenzar
+    procesarFlor(cF)
+    procesarPapel(cP)
+    mover
+  fin
+  proceso escalon(ES cF: numero; ES cP: numero)
+  comenzar
+    procesarAlto(cF,cP)
+    derecha
+    procesarAncho(cF,cP)
+    izquierda
+  fin
+areas
+  areaEscalera: AreaC(2, 1, 100, 100)
+  areaFiscal: AreaP(1, 1, 1, 1)
+robots
+  robot escaloni
+  variables
+    cantF, cantP, cantMasFqueP, diff: numero
+  comenzar
+    cantMasFqueP := 0
+    repetir (4)
+      cantF := 0
+      cantP := 0
+      escalon(cantF, cantP)
+      diff := (cantF - cantP)
+      si (diff >= 1)
+        cantMasFqueP := cantMasFqueP + 1
+    EnviarMensaje(cantMasFqueP, jefe)
+  fin
+  robot fiscalizador
+  variables
+    cantTotal, cant: numero
+  comenzar
+    cantTotal := 0
+    repetir (3)
+      RecibirMensaje(cant,*)
+      cantTotal := cantTotal + cant
+    Informar('Cantidad_TOTAL_de_flores_mas_que_papeles_',cantTotal)
+  fin
+variables
+  Robot1: escaloni
+  Robot2: escaloni
+  Robot3: escaloni
+  jefe: fiscalizador
+comenzar
+  AsignarArea(Robot1,areaEscalera)
+  AsignarArea(Robot2,areaEscalera)
+  AsignarArea(Robot3,areaEscalera)
+  AsignarArea(jefe,areaFiscal)
+  Iniciar(Robot1,2,1)
+  Iniciar(Robot2,7,1)
+  Iniciar(Robot3,12,1)
+  Iniciar(jefe,1,1)
+fin

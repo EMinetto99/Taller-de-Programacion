@@ -65,9 +65,9 @@ robots
         max:=cant
         idWinner:=quien
     si (cant=99)
-      Informar('ROBOT_QUE_TERMINÓ_LA_CARRERA',idWinner)
+      Informar('ROBOT_QUE_TERMINO_LA_CARRERA',idWinner)
     sino  
-      Informar('ROBOT_GANADOR_QUE_LLEGÓ_MAS_LEJOS',idWinner)
+      Informar('ROBOT_GANADOR_QUE_LLEGO_MAS_LEJOS',idWinner)
   fin
 variables
   r2d2: papelero
@@ -91,3 +91,4 @@ comenzar
   Iniciar(gonk,10,1)
   Iniciar(grievous,1,1)
 fin
+

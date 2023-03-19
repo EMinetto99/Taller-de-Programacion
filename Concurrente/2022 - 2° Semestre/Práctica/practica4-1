@@ -1,0 +1,160 @@
+programa practica4Ejer1
+procesos
+  proceso procesarAvenida(ES cF: numero)
+  comenzar
+    cF := cF - 1
+    mientras (PosAv < 100) & (cF > 0)
+      depositarFlor
+      cF := cF - 1
+      mover
+    depositarFlor
+  fin
+areas
+  areaServidor: AreaP(100,100,100,100)
+  areaCliente1: AreaP(1,1,1,1)
+  areaCompCli1: AreaPC(1,2,1,100)
+  areaCliente2: AreaP(2,1,2,1)
+  areaCompCli2: AreaPC(2,2,2,100)
+  areaCliente3: AreaP(3,1,3,1)
+  areaCompCli3: AreaPC(3,2,3,100)
+robots
+  robot client1
+  variables
+    rndF, myID, AvIni, CaIni, posCA: numero
+    finish, strobe: boolean
+  comenzar
+    myID := 1
+    finish := F
+    mientras ~(finish)
+      AvIni := PosAv
+      CaIni := PosCa
+      Random(rndF,1,4)
+      EnviarMensaje(myID, server)
+      EnviarMensaje(rndF, server)
+      EnviarMensaje(AvIni, server)
+      posCA := (PosCa + 1)
+      EnviarMensaje(posCA, server)
+      RecibirMensaje(strobe, server)
+      Pos(AvIni,posCA)
+      repetir (rndF)
+        tomarFlor
+      Pos(AvIni,CaIni)
+      procesarAvenida(rndF)
+      si (PosAv = 100)
+        finish := V
+      EnviarMensaje(finish, server)
+  fin
+  robot client2
+  variables
+    rndF, myID, AvIni, CaIni, posCA: numero
+    finish, strobe: boolean
+  comenzar
+    myID := 2
+    finish := F
+    mientras ~(finish)
+      AvIni := PosAv
+      CaIni := PosCa
+      Random(rndF,1,4)
+      EnviarMensaje(myID, server)
+      EnviarMensaje(rndF, server)
+      EnviarMensaje(AvIni, server)
+      posCA := (PosCa + 1)
+      EnviarMensaje(posCA, server)
+      RecibirMensaje(strobe, server)
+      Pos(AvIni,posCA)
+      repetir (rndF)
+        tomarFlor
+      Pos(AvIni,CaIni)
+      procesarAvenida(rndF)
+      si (PosAv = 100)
+        finish := V
+      EnviarMensaje(finish, server)
+  fin
+  robot client3
+  variables
+    rndF, myID, AvIni, CaIni, posCA: numero
+    finish, strobe: boolean
+  comenzar
+    myID := 2
+    finish := F
+    mientras ~(finish)
+      AvIni := PosAv
+      CaIni := PosCa
+      Random(rndF,1,4)
+      EnviarMensaje(myID, server)
+      EnviarMensaje(rndF, server)
+      EnviarMensaje(AvIni, server)
+      posCA := (PosCa + 1)
+      EnviarMensaje(posCA, server)
+      RecibirMensaje(strobe, server)
+      Pos(AvIni,posCA)
+      repetir (rndF)
+        tomarFlor
+      Pos(AvIni,CaIni)
+      procesarAvenida(rndF)
+      si (PosAv = 100)
+        finish := V
+      EnviarMensaje(finish, server)
+  fin
+  robot servidor
+  variables
+    finished, robotID, rndF, AvIni, CaIni, posAV, posCA: numero
+    done, strobe: boolean
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+    finished := 0
+    AvIni := PosAv
+    CaIni := PosCa
+    mientras (finished < 3)
+      RecibirMensaje(robotID,*)
+      si (robotID = 1)
+        RecibirMensaje(rndF,cliente1)
+        RecibirMensaje(posAV,cliente1)
+        RecibirMensaje(posCA,cliente1)
+      sino
+        si (robotID = 2)
+          RecibirMensaje(rndF,cliente2)
+          RecibirMensaje(posAV,cliente2)
+          RecibirMensaje(posCA,cliente2)
+        sino
+          RecibirMensaje(rndF,cliente3)
+          RecibirMensaje(posAV,cliente3)
+          RecibirMensaje(posCA,cliente3)
+      Pos(posAV, posCA)
+      repetir (rndF)
+        depositarFlor
+      Pos(AvIni,CaIni)
+      si (robotID = 1)
+        EnviarMensaje(V,cliente1)
+      sino
+        si (robotID = 2)
+          EnviarMensaje(V,cliente2)
+        sino
+          EnviarMensaje(V,cliente3)
+      RecibirMensaje(strobe,*)
+      si (done)
+        finished := (finished + 1)
+  fin
+variables
+  cliente1: client1
+  cliente2: client2
+  cliente3: client3
+  server: servidor
+comenzar
+  AsignarArea(cliente1,areaCliente1)
+  AsignarArea(cliente1,areaCompCli1)
+  AsignarArea(cliente2,areaCliente2)
+  AsignarArea(cliente2,areaCompCli2)
+  AsignarArea(cliente3,areaCliente3)
+  AsignarArea(cliente3,areaCompCli3)
+  AsignarArea(server,areaServidor)
+  AsignarArea(server,areaCompCli1)
+  AsignarArea(server,areaCompCli2)
+  AsignarArea(server,areaCompCli3)
+  Iniciar(cliente1,1,1)
+  Iniciar(cliente2,2,1)
+  Iniciar(cliente3,3,1)
+  Iniciar(server,100,100)
+fin
+

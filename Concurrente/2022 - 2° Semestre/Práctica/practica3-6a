@@ -1,0 +1,145 @@
+programa practica3Ejer6a
+procesos
+  proceso izquierda
+  comenzar
+    repetir (3)
+      derecha
+  fin
+  proceso procesarPapel(ES cP: numero)
+  comenzar
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+        cP := cP + 1
+  fin
+  proceso procesarFlor(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF := cF + 1
+  fin
+areas
+  areaPuesto1: AreaPC(1,20,100,20)
+  areaPuesto2: AreaPC(1,21,100,21)
+  areaPuesto3: AreaPC(1,22,100,22)
+  areaRobots: AreaC(2,2,15,15)
+  areaFiscal: AreaP(1,1,1,1)
+robots
+  robot papelero
+  variables
+    quienSoy, posCA, cantP: numero
+  comenzar
+    RecibirMensaje(quienSoy,fisco)
+    cantP := 0
+    derecha
+    repetir (4)
+      repetir (6)
+        procesarPapel(cantP)
+        mover
+      izquierda
+    EnviarMensaje(quienSoy,fisco)
+    RecibirMensaje(posCA,fisco)
+    Pos(1,posCA)
+    mientras (PosAv < 100) & (cantP > 0)
+      depositarPapel
+      cantP := (cantP) - 1 
+      mover
+    si (cantP > 0)
+      depositarPapel
+  fin
+  robot papeflor
+  variables
+    quienSoy, posCA, cantP, cantF: numero
+  comenzar
+    RecibirMensaje(quienSoy,fisco)
+    cantP := 0
+    cantF := 0
+    derecha
+    repetir (4)
+      repetir (9)
+        procesarPapel(cantP)
+        procesarFlor(cantF)
+        mover
+      izquierda
+    EnviarMensaje(quienSoy,fisco)
+    RecibirMensaje(posCA,fisco)
+    Pos(1,posCA)
+    mientras (PosAv < 100) & ((cantF > 0) | (cantP > 0))
+      si (cantF > 0)
+        depositarFlor
+        cantF := (cantF) - 1
+      si (cantP > 0)
+        depositarPapel
+        cantP := (cantP) - 1
+      mover
+    si (cantF > 0)
+      depositarFlor
+    si (cantP > 0)
+      depositarPapel
+  fin
+  robot florero
+  variables
+    quienSoy, posCA, cantF: numero
+  comenzar
+    RecibirMensaje(quienSoy,fisco)
+    cantF := 0
+    derecha
+    repetir (4)
+      repetir (5)
+        procesarFlor(cantF)
+        mover
+      izquierda
+    EnviarMensaje(quienSoy,fisco)
+    RecibirMensaje(posCA,fisco)
+    Pos(1,posCA)
+    mientras (PosAv < 100) & (cantF > 0)
+      depositarFlor
+      cantF := (cantF) - 1 
+      mover
+    si (cantF > 0)
+      depositarFlor
+  fin
+  robot fiscalizador
+  variables
+    robotID, posCA: numero
+  comenzar
+    posCA := 20
+    EnviarMensaje(1,R1)
+    EnviarMensaje(2,R2)
+    EnviarMensaje(3,R3)
+    repetir (3)
+      RecibirMensaje(robotID,*)
+      si (robotID = 1)
+        EnviarMensaje(posCA,R1)
+      sino
+        si (robotID = 2)
+          EnviarMensaje(posCA,R2)
+        sino
+          EnviarMensaje(posCA,R3)
+      posCA := posCA + 1
+  fin
+variables
+  R1: florero
+  R2: papeflor
+  R3: papelero
+  fisco: fiscalizador
+comenzar
+  AsignarArea(R1,areaPuesto1)
+  AsignarArea(R1,areaPuesto2)
+  AsignarArea(R1,areaPuesto3)
+  AsignarArea(R2,areaPuesto1)
+  AsignarArea(R2,areaPuesto2)
+  AsignarArea(R2,areaPuesto3)
+  AsignarArea(R3,areaPuesto1)
+  AsignarArea(R3,areaPuesto2)
+  AsignarArea(R3,areaPuesto3)
+  AsignarArea(fisco,areaFiscal)
+  AsignarArea(R1,areaRobots)
+  AsignarArea(R2,areaRobots)
+  AsignarArea(R3,areaRobots)
+  Iniciar(R1,2,2)
+  Iniciar(R2,5,5)
+  Iniciar(R3,9,9)
+  Iniciar(fisco,1,1)
+fin

@@ -1,0 +1,60 @@
+programa practica2Ejer1a
+procesos
+  proceso procesarFlor(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF := cF + 1
+  fin
+areas
+  areaFlorero1: AreaP(1, 1, 1, 10)
+  areaFlorero2: AreaP(2, 11, 2, 20)
+robots
+  robot florero1
+  variables
+    cantF, cantExt, diff: numero
+    winner: boolean
+  comenzar
+    cantF := 0
+    winner := F
+    repetir 9
+      procesarFlor(cantF)
+      mover
+    procesarFlor(cantF)
+    EnviarMensaje(cantF, Robot2)
+    RecibirMensaje(cantExt, Robot2)
+    diff := (cantF - cantExt)
+    si (diff > 0)
+      winner := V
+    si (winner)
+      Informar('Gané_con_una_diferencia_de_flores_de_',diff)
+  fin
+  robot florero2
+  variables
+    cantF, cantExt, diff: numero
+    winner: boolean
+  comenzar
+    cantF := 0
+    winner := F
+    repetir 9
+      procesarFlor(cantF)
+      mover
+    procesarFlor(cantF)
+    EnviarMensaje(cantF, Robot1)
+    RecibirMensaje(cantExt, Robot1)
+    diff := (cantF - cantExt)
+    si (diff > 0)
+      winner := V
+    si (winner)
+      Informar('Gané_con_una_diferencia_de_flores_de_',diff)
+  fin
+variables
+  Robot1: florero1
+  Robot2: florero2
+comenzar
+  AsignarArea(Robot1,areaFlorero1)
+  AsignarArea(Robot2,areaFlorero2)
+  Iniciar(Robot1,1,1)
+  Iniciar(Robot2,2,11)
+fin

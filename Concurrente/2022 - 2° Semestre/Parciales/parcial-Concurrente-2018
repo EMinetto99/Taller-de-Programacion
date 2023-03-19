@@ -1,0 +1,126 @@
+programa parcial2018
+procesos
+  proceso procesarFlor(ES cF: numero)
+  comenzar
+    si HayFlorEnLaEsquina
+      mientras HayFlorEnLaEsquina
+        tomarFlor
+        cF := cF + 1
+  fin
+  proceso procesarPapel(ES cP: numero)
+  comenzar
+    si HayPapelEnLaEsquina
+      mientras HayPapelEnLaEsquina
+        tomarPapel
+        cP := cP + 1
+  fin
+  proceso procesarAvenidaIdaF(ES cF: numero)
+  variables
+    CaSig: numero
+  comenzar
+    repetir (4)
+      procesarFlor(cF)
+      CaSig := (PosCa+1)
+      BloquearEsquina(PosAv, CaSig)
+      mover
+      procesarFlor(cF)
+      mover
+      LiberarEsquina(PosAv, CaSig)
+  fin
+  proceso procesarAvenidaVueltaF(ES cF: numero)
+  variables
+    CaSig: numero
+  comenzar
+    repetir (4)
+      procesarFlor(cF)
+      CaSig := (PosCa - 1)
+      BloquearEsquina(PosAv, CaSig)
+      mover
+      procesarFlor(cF)
+      mover
+      LiberarEsquina(PosAv, CaSig)
+  fin
+  proceso procesarCalleF(ES cF: numero)
+  comenzar
+    repetir (2)
+      procesarFlor(cF)
+      mover
+  fin
+  proceso procesarAvenidaP(ES cP: numero)
+  comenzar
+    repetir (2)
+      procesarPapel(cP)
+      mover
+  fin
+  proceso procesarCalleIdaP(ES cP: numero)
+  variables
+    AvSig: numero
+  comenzar
+    repetir (4)
+      procesarPapel(cP)
+      AvSig := (PosAv) + 1
+      BloquearEsquina(AvSig, PosCa)
+      mover
+      procesarPapel(cP)
+      mover
+      LiberarEsquina(AvSig, PosCa)
+  fin
+  proceso procesarCalleVueltaP(ES cP: numero)
+  variables
+    AvSig: numero
+  comenzar
+    repetir (4)
+      procesarPapel(cP)
+      AvSig := (PosAv) - 1
+      BloquearEsquina(AvSig, PosCa)
+      mover
+      procesarPapel(cP)
+      mover
+      LiberarEsquina(AvSig, PosCa)
+  fin
+areas
+  areaTrabajo: AreaPC(1,1,9,9)
+robots
+  robot florero
+  variables
+    cantF: numero
+  comenzar
+    cantF := 0
+    procesarAvenidaIdaF(cantF)
+    derecha
+    procesarCalleF(cantF)
+    derecha
+    procesarAvenidaVueltaF(cantF)
+    derecha
+    procesarCalleF(cantF)
+    Informar('Cantidad_de_flores_juntadas_',cantF)
+  fin
+  robot papelero
+  variables
+    cantP: numero
+  comenzar
+    cantP := 0
+    procesarAvenidaP(cantP)
+    derecha
+    procesarCalleIdaP(cantP)
+    derecha
+    procesarAvenidaP(cantP)
+    derecha
+    procesarCalleVueltaP(cantP)
+    Informar('Cantidad_de_papeles_juntados_',cantP)
+  fin
+variables
+  F1: florero
+  F2: florero
+  P1: papelero
+  P2: papelero
+comenzar
+  AsignarArea(F1, areaTrabajo)
+  AsignarArea(F2, areaTrabajo)
+  AsignarArea(P1, areaTrabajo)
+  AsignarArea(P2, areaTrabajo)
+  Iniciar(F1,2,1)
+  Iniciar(F2,6,1)
+  Iniciar(P1,1,2)
+  Iniciar(P2,1,6)
+fin
