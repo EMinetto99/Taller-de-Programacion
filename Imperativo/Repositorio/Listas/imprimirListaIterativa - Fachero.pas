@@ -3,7 +3,7 @@
 procedure imprimirLista(L: lista);
 	begin
 		write('L --->');
-		while (L <> nil) then begin
+		while (L <> nil) do begin
 			write('|',L^.dato,'|--->');
 			L:= L^.sig;
 			end;

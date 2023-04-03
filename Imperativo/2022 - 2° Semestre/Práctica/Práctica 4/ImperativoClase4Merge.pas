@@ -72,6 +72,7 @@ procedure GenerarVectorListas (var v: vector);
         p.cantDias:= random(14) + 1;
         writeln (p.cantDias);
         end;
+        writeln;
       end;
 
   procedure InsertarElementoEnLista(var l: Lista; pG: prestamoAGuardar);
@@ -252,4 +253,5 @@ begin
   ImprimirEstructuraMerge (l1);
   MergeAcumulador (v, l2);
   ImprimirEstructuraMergeAcumulador (l2);
+  readln;
 end.
