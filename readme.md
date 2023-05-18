@@ -27,7 +27,7 @@
 - [Ejercicios - Práctica 2 (Objetos)](/Objetos/2022%20-%202°%20Semestre/Práctica/TP2022_ProyectoAlumnos/src/tema2)
 - [Ejercicios - Práctica 3 (Clases)](/Objetos/2022%20-%202°%20Semestre/Práctica/TP2022_ProyectoAlumnos/src/tema3)
 - [Ejercicios - Práctica 4 (Herencia/Polimorfísmo)](/Objetos/2022%20-%202°%20Semestre/Práctica/TP2022_ProyectoAlumnos/src/tema4)
-- Ejercicios - Práctica 5 (Repaso)
+- [Ejercicios - Práctica 5 (Repaso)](/Objetos/2022%20-%202°%20Semestre/Práctica/TP2022_ProyectoAlumnos/src/tema5)
 ### Teoría
 - [Teorías](/Objetos/2022%20-%202°%20Semestre/Teoría)
 ## Concurrente (R-Info)
