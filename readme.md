@@ -31,7 +31,14 @@
 ### Teoría
 - [Teorías](/Objetos/2022%20-%202°%20Semestre/Teoría)
 ## Concurrente (R-Info)
-- Próximamente . . .
+### Práctica:
+- [Prácticas](/Concurrente/2022%20-%202°%20Semestre/Práctica)
+- [Ejercicios - Práctica 1](/Concurrente/2022%20-%202°%20Semestre/Práctica/Práctica%201)
+- [Ejercicios - Práctica 2](/Concurrente/2022%20-%202°%20Semestre/Práctica/Práctica%202)
+- [Ejercicios - Práctica 3](/Concurrente/2022%20-%202°%20Semestre/Práctica/Práctica%203)
+- [Ejercicios - Práctica 4](/Concurrente/2022%20-%202°%20Semestre/Práctica/Práctica%204)
+### Teoría
+- [Teorías](/Concurrente/2022%20-%202°%20Semestre/Teoría)
 #### [Parciales Imperativo](/Imperativo/2022%20-%202°%20Semestre/Parciales)
 #### [Parciales Objetos](/Objetos/2022%20-%202°%20Semestre/Parciales)
 #### [Parciales Concurrente](/Concurrente/2022%20-%202°%20Semestre/Parciales)
